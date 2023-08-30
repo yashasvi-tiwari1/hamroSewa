@@ -28,3 +28,27 @@
 /*    )*/
 /*    rgb(var(--background-start-rgb));*/
 /*}*/
+body {
+  @apply bg-white text-black;
+}
+.horizontal-line {
+  border-top: 1px solid ;
+}
+.date-time{
+  display: flex;
+  margin-left: 80px;
+}
+.ld{
+  /*border: 1px solid red;*/
+  text-align: center;
+}
+
+.DatePicker{
+  background: white;
+}
+.label{
+  @apply block text-sm font-medium
+}
+.input_field{
+  @apply mt-1 p-2 w-full border bg-white  rounded-md focus:ring focus:ring-teal focus:outline-none focus:ring-opacity-50;
+}

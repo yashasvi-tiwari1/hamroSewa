@@ -1,21 +1,23 @@
-import { ReactElement, useEffect } from "react";
+import {ReactElement, useEffect, useState} from "react";
 import SiteLayout from "@sewa/site_layouts/siteLayout";
 import { IconMail, IconPhoneCall } from "@tabler/icons-react";
 import {router} from "next/client";
 import {useRouter} from "next/router";
+import CustomDialog from "./dialog-page"
 
 function Booked() {
     const navigate = useRouter();
-    const next = () => {
-        navigate.push({
-            pathname: "/book-a",
-            query: { id: "1" },
-        });
+    const [isDialogOpen,setDialogOpen]=useState(false);
+    const openDialog = () => {
+        setDialogOpen(true);
     };
+    const closeDialog = ()=>{
+        setDialogOpen(false);
+    }
     return (
         <div>
             <div className="container p-8 md:py-32 md:px-16">
-                <div className="space-y-12">
+                <div className="space-y-12 ">
                     <div className="space-y-2">
                         <p className="text-2xl font-bold"> Vendors Name </p>
                         <p className="text-custom-blue font-semibold"> Vendors Faculty</p>
@@ -47,17 +49,18 @@ function Booked() {
                                 <IconMail />
                             </div>
                             <div className="leading-tight">
-                                <p className="text-sm font-semibold">Email us :</p>
+                                <p className="text-sm  font-semibold">Email us :</p>
                                 <p>personal mail</p>
                             </div>
                         </div>
                     </div>
                     <button
-                        className="button rounded-md text-white text-base bg-custom-tale py-3 px-5 tracking-wider mt-5 md:mt-10"
-                        onClick={next}
+                        className="button rounded-md text-white text-base bg-teal-600 py-3 px-5 tracking-wider mt-5 md:mt-10"
+                        onClick={openDialog}
                     >
                         Book Now
                     </button>
+                    <CustomDialog isOpen={isDialogOpen} onClose={closeDialog}/>
                 </div>
             </div>
         </div>

@@ -2,11 +2,11 @@
 const url = require("url");
 module.exports = {
   content: ["./src/**/*.{ts,tsx,js,jsx}", "./y/**/*.{ts,tsx,js,jsx}"],
-  corePlugins: {
-    container: false,
-  },
   theme: {
     extend: {
+      ringColor:{
+        'teal':'#00A3AF',
+      },
       colors:{
         'custom-tale':"#00BABD",
       },

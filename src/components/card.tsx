@@ -1,47 +1,46 @@
-import React, { useCallback, useEffect } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import 'swiper/css';
+import 'swiper/css/pagination';
 import { Navigation } from "swiper/modules";
+import { Autoplay, Pagination} from 'swiper/modules';
 import Image from "next/image";
 import axios from "axios";
 import {BASEURL} from "@sewa/pages/api/apiContent";
 import { useRouter } from "next/router";
+import {toast} from "react-toastify";
 function Card() {
     const [products, setProducts] = React.useState([]);
     const navigate = useRouter();
-
-    // useEffect(() => {
-    //     axios
-    //         .get(
-    //             `${BASEURL}/items/products?fields=*.product_category_id.name,images.images_id.image`
-    //         )
-    //         .then((response) => {
-    //             setProducts(response.data?.data);
-    //         })
-    //         .catch((error) => {});
-    // }, []);
-
-    const services = [
-        {
-            name:"Plumbing",
-            image:"plumbing.png",
-            description:"Plumbing is the solution for home appliances"
-        },
-        {
-            name:"Plumbing",
-            image:"plumbing.png",
-            description:"Plumbing is the solution for home appliances"
-        }, {
-            name:"Plumbing",
-            image:"plumbing.png",
-            description:"Plumbing is the solution for home appliances"
-        },
-        {
-            name:"Plumbing",
-            image:"plumbing.png",
-            description:"Plumbing is the solution for home appliances"
-        },
-    ]
+    const [services, setServices] = useState([]);
+    useEffect(()=>{
+        axios.get(`${BASEURL}/services`).then((response)=>{
+            setServices(response.data);
+        })
+            .catch((error)=>{toast.error(error.response)})
+    },[BASEURL])
+    // const Services = [
+    //     {
+    //         name:"Plumbing",
+    //         image:"plumbing.png",
+    //         description:"Plumbing is the solution for home appliances"
+    //     },
+    //     {
+    //         name:"Plumbing",
+    //         image:"plumbing.png",
+    //         description:"Plumbing is the solution for home appliances"
+    //     }, {
+    //         name:"Plumbing",
+    //         image:"plumbing.png",
+    //         description:"Plumbing is the solution for home appliances"
+    //     },
+    //     {
+    //         name:"Plumbing",
+    //         image:"plumbing.png",
+    //         description:"Plumbing is the solution for home appliances"
+    //     },
+    // ]
+    console.log(services);
     return (
         <div className=" container md:px-16 md:py-16 p-8 md:p-12 full-width">
             <div className=" md:text-4xl p-1 text-2xl text-center  font-semibold ">
@@ -49,10 +48,22 @@ function Card() {
             </div>
             <Swiper
                 navigation={true}
-                modules={[Navigation]}
+                centeredSlides={true}
+                centeredSlidesBounds ={true}
+            autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                }}
+                pagination={{
+                    el: ".swiper-pagination",
+                    clickable: true,
+                }}
+                modules={[Navigation,Pagination,Autoplay]}
                 spaceBetween={16}
-                slidesPerView={4}
-                wrapperClass="md:py-8 py-4"
+                className="myswiper"
+                slidesPerView={3}
+                    wrapperClass="md:py-8 py-4"
+
                 breakpoints={{
                     // Responsive breakpoints
                     0: {
@@ -92,9 +103,9 @@ const ServiceCard = ({service}: any) => {
                 <img
                     height={296}
                     width={296}
-                    src={"https://media.licdn.com/dms/image/D5603AQFYHNryTfWZig/profile-displayphoto-shrink_800_800/0/1684424826825?e=2147483647&v=beta&t=hCsTMZWT_cSs0ExjU-bnteerDteJFrr5cuXCMFhkJf0"}
+                    src={"http://"+service.image_url}
                     className="w-[296px] h-[296px] object-contain "
-                    alt=""
+                    alt="here is an image"
                 />
             </div>
             <div className="h-50 flex flex-col px-4  space-y-4">

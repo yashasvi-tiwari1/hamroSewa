@@ -39,14 +39,14 @@ function Landing({icons}:any){
             <div className="w-full flex justify-center py-8">
                 <div className="container  px-8 md:px-16  top-40 space-y-16">
                     <div className="justify-center flex">
-                        <p className=" text-center text-5xl font-bold max-w-lg pt-16">Find the
+                        <p className=" text-center text-5xl font-bold max-w-lg text-black pt-16">Find the
                             <span className="text-custom-tale pl-3">Best Service </span> pros near you.</p>
                     </div>
                     <div className="flex justify-center gap-4 ">
                         <div className="flex items-center relative left-8 ">
                             <IconSearch className="w-8 h-8 absolute text-gray-800"/>
                         </div>
-                        <input type="text" placeholder="How can we help ?" className="max-w-lg w-full h-14  px-14 rounded-lg border border-gray-400"/>
+                        <input type="text" placeholder="How can we help ?" className="max-w-lg w-full h-14  px-14 rounded-lg bg-white border border-gray-400"/>
                         <button className="bg-custom-tale text-white px-5 font-medium text-xl rounded-lg">Search</button>
                     </div>
                     <div className="flex justify-center gap-14 ">
