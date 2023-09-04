@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@react-google-maps/api": "^2.18.1",
+    "@react-google-maps/api": "^2.19.2",
     "@tabler/icons-react": "^2.20.0",
     "@types/node": "20.3.0",
     "@types/react": "18.2.11",

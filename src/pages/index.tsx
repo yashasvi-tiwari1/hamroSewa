@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {NextPageWithLayout} from "@sewa/pages/_app";
 import Landing from "@sewa/components/landing";
 import Card from "@sewa/components/card";
+import VendorRecommendation from "@sewa/components/vendorRecommendation";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ const Home: NextPageWithLayout = () => {
             <Layout>
                 <Landing/>
                 <Card/>
+                <VendorRecommendation/>
             </Layout>
             <ToastContainer />
         </>

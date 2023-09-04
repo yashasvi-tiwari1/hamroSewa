@@ -44,7 +44,7 @@ body {
 }
 
 .DatePicker{
-  background: white;
+  background: #76963d;
 }
 .label{
   @apply block text-sm font-medium
