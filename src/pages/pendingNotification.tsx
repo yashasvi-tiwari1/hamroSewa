@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
-import SiteLayout from "@sewa/site_layouts/siteLayout";
+import PublicLayout from "@sewa/site_layouts/publicLayout";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
@@ -108,6 +108,6 @@ function PendingNotification() {
 }
 
 PendingNotification.getLayout = function getLayout(page: ReactElement) {
-  return <SiteLayout>{page}</SiteLayout>;
+  return <PublicLayout>{page}</PublicLayout>;
 };
 export default PendingNotification;

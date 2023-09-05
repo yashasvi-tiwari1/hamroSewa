@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
-import SiteLayout from "@sewa/site_layouts/siteLayout";
+import PublicLayout from "@sewa/site_layouts/publicLayout";
 import PaymentSuccess from "@sewa/pages/paymentsuccess";
 
 export interface Vendor {
@@ -93,8 +93,10 @@ function AcceptedNotification() {
   console.log(userPayment);
   const payment_detail = userPayment.payment;
   const payment = payment_detail.filter((pay) => {
-    if (pay.status != "Paid") {
-      return pay;
+    if (pay.booking.status == "accepted") {
+      if (pay.status != "Paid") {
+        return pay;
+      }
     }
   });
 
@@ -227,6 +229,6 @@ function AcceptedNotification() {
 }
 
 AcceptedNotification.getLayout = function getLayout(page: ReactElement) {
-  return <SiteLayout>{page}</SiteLayout>;
+  return <PublicLayout>{page}</PublicLayout>;
 };
 export default AcceptedNotification;

@@ -9,7 +9,7 @@ import {
 import { ReactElement, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
-import SiteLayout from "@sewa/site_layouts/siteLayout";
+import PublicLayout from "@sewa/site_layouts/publicLayout";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -146,6 +146,6 @@ function VendorMaps() {
   );
 }
 VendorMaps.getLayout = function getLayout(page: ReactElement) {
-  return <SiteLayout>{page}</SiteLayout>;
+  return <PublicLayout>{page}</PublicLayout>;
 };
 export default VendorMaps;

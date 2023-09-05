@@ -7,6 +7,7 @@ import { router } from "next/client";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
+import { useNotification } from "@sewa/site_layouts/publicLayout";
 
 interface DialogProps {
   isOpen: boolean;
@@ -26,7 +27,7 @@ const CustomDialog: React.FC<DialogProps> = ({
   const [endDate, setEndDate] = useState(new Date());
   const [description, setDescription] = useState("");
   const cancelButtonRef = useRef(null);
-
+  const { getBookings } = useNotification();
   const handle_description = (e: any) => {
     setDescription(e.target.value);
   };
@@ -42,6 +43,7 @@ const CustomDialog: React.FC<DialogProps> = ({
       .post(`${BASEURL}/bookings`, data)
       .then((response) => {
         toast.success(response.data.msg);
+        getBookings();
       })
       .catch((error) => {
         console.log(error);

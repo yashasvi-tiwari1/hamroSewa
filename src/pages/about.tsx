@@ -1,14 +1,11 @@
-import React, {ReactElement} from "react";
-import SiteLayout from "@sewa/site_layouts/siteLayout";
+import React, { ReactElement } from "react";
+import PublicLayout from "@sewa/site_layouts/publicLayout";
 
-function About(){
-    return(
-        <>
-        </>
-    )
+function About() {
+  return <></>;
 }
 About.getLayout = function getLayout(page: ReactElement) {
-    return <SiteLayout>{page}</SiteLayout>
+  return <PublicLayout>{page}</PublicLayout>;
 };
 
 export default About;

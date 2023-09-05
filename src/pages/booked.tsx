@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
-import SiteLayout from "@sewa/site_layouts/siteLayout";
+import PublicLayout from "@sewa/site_layouts/publicLayout";
 import { IconMail, IconPhoneCall } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import CustomDialog from "./dialog-page";
@@ -88,6 +88,6 @@ function Booked() {
 }
 
 Booked.getLayout = function getLayout(page: ReactElement) {
-  return <SiteLayout>{page}</SiteLayout>;
+  return <PublicLayout>{page}</PublicLayout>;
 };
 export default Booked;

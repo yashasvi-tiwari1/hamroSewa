@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IconBell, IconMenu2, IconX } from "@tabler/icons-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import axios from "axios";
-import { BASEURL } from "@sewa/pages/api/apiContent";
-import { toast } from "react-toastify";
-import NotifyDialog from "@sewa/pages/notify";
 
 interface Vendor {
   id: number;
@@ -16,7 +12,7 @@ interface Vendor {
   contact: string;
 }
 
-interface Booking {
+export interface Booking {
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -50,34 +46,10 @@ interface userType {
   location: Location;
 }
 
-function Navbar() {
+function Navbar({ bookings }: { bookings: Booking[] }) {
   const navigate = useRouter();
-  const [bookings, setBookings] = useState<[Booking]>([
-    {
-      id: 0,
-      createdAt: Date(),
-      updatedAt: Date(),
-      booked_date: Date(),
-      status: "",
-      vendor: { id: 0, service_type: "", name: "", contact: " " },
-    },
-  ]);
 
-  useEffect(() => {
-    console.log("hello");
-    localStorage.setItem("userId", "1");
-    const userId = localStorage.getItem("userId");
-
-    axios
-      .get(`${BASEURL}/user/userBookings/${userId}`)
-      .then((response) => {
-        setBookings(response.data);
-      })
-      .catch((error) => {
-        toast.error(error.response);
-      });
-  }, [BASEURL]);
-  console.log(bookings);
+  // console.log(bookings);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
@@ -94,6 +66,7 @@ function Navbar() {
     navigate.push("/pendingNotification");
     setIsNotificationOpen(false);
   };
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <nav className="bg-gray-50 border h-max">
@@ -141,20 +114,23 @@ function Navbar() {
             <NavbarLink name="Contact" href="/contact" />
             <NavbarLink name="About" href="/about" />
             <div className="relative">
-              <button onClick={openNotification}>
-                <div className="relative">
-                  <IconBell className="w-6 h-6 flex z-20"></IconBell>
-                  <div className="absolute text-red-600 ml-3 -mt-9 rounded-full flex items-center p-1 w-5 h-5 bg-red-100">
-                    <span className="font-semibold">{bookings.length}</span>
-                  </div>
+              <button
+                ref={buttonRef}
+                onClick={() => setIsNotificationOpen((open) => !open)}
+              >
+                <IconBell className="w-6 h-6 flex z-20" />
+                <div className="absolute text-red-600 ml-3 -mt-9 rounded-full flex items-center p-1 w-5 h-5 bg-red-100">
+                  <span className="font-semibold">{bookings.length}</span>
                 </div>
               </button>
-              <NotifyDialog
-                isOpen={isNotificationOpen}
-                onClose={closeNotification}
-                bookings={bookings}
-                gotoNotification={goNotification}
-              />
+              {isNotificationOpen && (
+                <NotificationPopup
+                  buttonRef={buttonRef}
+                  onClose={closeNotification}
+                  bookings={bookings}
+                  gotoNotification={goNotification}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -180,115 +156,72 @@ function NavbarLink({ href, name }: NavbarLinkProps) {
 }
 
 export default Navbar;
-//
-// interface DialogProps {
-//   isOpen: boolean;
-//   onClose: () => void;
-// }
-//
-// const NotifyDialog: React.FC<DialogProps> = ({ isOpen, onClose }) => {
-//   if (!isOpen) return null;
-//   const [startDate, setStartDate] = useState(new Date());
-//   const [endDate, setEndDate] = useState(new Date());
-//   const [handleDescription, setHandleDescription] = useState("");
-//   const cancelButtonRef = useRef(null);
-//
-//   return (
-//     <Transition.Root show={isOpen} as={Fragment}>
-//       <Dialog
-//         as="div"
-//         className="fixed inset-0 z-10 overflow-y-auto"
-//         static
-//         onClose={() => null}
-//       >
-//         <div className="flex items-end justify-center overflow-hidden min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-//           <Transition.Child
-//             as={Fragment}
-//             enter="ease-out duration-300"
-//             enterFrom="opacity-0"
-//             enterTo="opacity-100"
-//             leave="ease-in duration-200"
-//             leaveFrom="opacity-100"
-//             leaveTo="opacity-0"
-//           >
-//             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-//           </Transition.Child>
-//
-//           <span
-//             className="hidden sm:inline-block sm:align-middle sm:h-screen"
-//             aria-hidden="true"
-//           >
-//             &#8203;
-//           </span>
-//
-//           <Transition.Child
-//             as={Fragment}
-//             enter="ease-out duration-300"
-//             enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-//             enterTo="opacity-100 translate-y-0 sm:scale-100"
-//             leave="ease-in duration-200"
-//             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-//             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-//           >
-//             <div className="inline-block align-bottom overflow-hidden bg-white rounded-lg text-left  shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full sm:max-h-2xl sm:h-full">
-//               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-//                 <div className="sm:flex sm:items-start">
-//                   <div className="mx-auto flex-shrink-0 flex items-center -mt-1 justify-center h-12 w-12 rounded-full bg-teal-200 sm:mx-0 sm:h-10 sm:w-10">
-//                     <IconCircleChevronRight
-//                       className="h-6 w-6 text-teal-700"
-//                       aria-hidden="true"
-//                     />
-//                   </div>
-//                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-//                     <Dialog.Title
-//                       as="h3"
-//                       className="text-2xl font-semibold leading-6 text-gray-900"
-//                     >
-//                       Booking Form
-//                     </Dialog.Title>
-//                     <div className="mt-2">
-//                       <p className="text-sm text-gray-500">
-//                         Please select the dates you want to book service. please
-//                         provide the detail information about your problem.
-//                       </p>
-//                     </div>
-//                     <div className="mt-4">
-//                       <label className="text-lg">Select Booking Date</label>
-//                       <div className="flex mt-4">
-//                         <div className="flex flex-col">
-//                           <DatePicker
-//                             className="DatePicker border p-2 rounded-md w-32"
-//                             minDate={new Date()}
-//                             selected={startDate}
-//                             onChange={(date: Date) => setStartDate(date)}
-//                             selectsStart
-//                           />
-//                         </div>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-//                 <button
-//                   type="button"
-//                   className="inline-flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 sm:ml-3 sm:w-auto"
-//                 >
-//                   Confirm
-//                 </button>
-//                 <button
-//                   type="button"
-//                   className="mt-3 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-700 sm:mt-0 sm:w-auto"
-//                   onClick={onClose}
-//                   ref={cancelButtonRef}
-//                 >
-//                   Cancel
-//                 </button>
-//               </div>
-//             </div>
-//           </Transition.Child>
-//         </div>
-//       </Dialog>
-//     </Transition.Root>
-//   );
-// };
+
+const NotificationPopup = React.forwardRef<
+  HTMLButtonElement,
+  {
+    onClose: () => void;
+    bookings: Booking[];
+    buttonRef?: RefObject<HTMLButtonElement>;
+    gotoNotification: () => void;
+  }
+>(({ gotoNotification, onClose, buttonRef, bookings }, ref) => {
+  const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      const node = e.target as Node;
+      if (
+        divRef.current &&
+        buttonRef?.current &&
+        !buttonRef.current.contains(node) &&
+        !divRef.current.contains(node)
+      )
+        onClose();
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={divRef}
+      className="absolute bg-white z-50 top-10 right-0 rounded-md border p-5 shadow-md"
+    >
+      <div className="sm:flex flex-col gap-2 sm:items-start">
+        <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+          <h3 className="text-2xl font-semibold leading-6 text-gray-900">
+            Notifications
+          </h3>
+        </div>
+        <div className="w-full flex flex-col gap-2">
+          {bookings.map((booking: any) => {
+            const date = booking.booked_date.toString();
+            const showDate = date.slice(0, 10);
+            return (
+              <button onClick={gotoNotification}>
+                <div className="flex w-full p-2 gap-4 overflow-hidden rounded-md border-2">
+                  {booking.status == "pending" ? (
+                    <div className="bg-red-500 text-white w-1/3 rounded-md p-1 text-xs">
+                      {booking.status}
+                    </div>
+                  ) : (
+                    <div className="bg-teal-600 text-white w-1/3 rounded-md p-1 text-xs">
+                      {booking.status}
+                    </div>
+                  )}
+                  <div className="bg-teal-400 rounded-md w-1/3 p-1 text-xs font-semibold">
+                    {booking.vendor[0].service_type}
+                  </div>
+                  <div className=" p-1 text-xs font-semibold">{showDate}</div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+});
