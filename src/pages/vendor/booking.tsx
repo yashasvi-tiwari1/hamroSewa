@@ -29,7 +29,6 @@ const Booking: NextPageWithLayout = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   const fetchBookings = useCallback(() => {
-    localStorage.setItem("vendorId", "2");
     const vendorId = localStorage.getItem("vendorId");
 
     axios
@@ -49,12 +48,32 @@ const Booking: NextPageWithLayout = () => {
   console.log(bookings);
 
   useEffect(() => {
+    localStorage.setItem("vendorId", "5");
+
     fetchBookings();
   }, [fetchBookings]);
 
   const acceptBooking = (bookingId: number) => {
     axios
-      .post(`${BASEURL}/booking/accept/${bookingId}`, { status: "accepted" })
+      .patch(`${BASEURL}/bookings/accept/${bookingId}`, { status: "accepted" })
+      .then((response) => {
+        enqueueSnackbar(response?.data.message, {
+          variant: "success",
+          anchorOrigin: { horizontal: "center", vertical: "bottom" },
+        });
+        fetchBookings();
+      })
+      .catch((err) => {
+        console.log(err.response);
+        enqueueSnackbar(err.response?.data?.message, {
+          variant: "error",
+          anchorOrigin: { horizontal: "center", vertical: "bottom" },
+        });
+      });
+  };
+  const cancelBooking = (bookingId: number) => {
+    axios
+      .patch(`${BASEURL}/bookings/cancel/${bookingId}`, { status: "canceled" })
       .then((response) => {
         enqueueSnackbar(response.data.message, {
           variant: "success",
@@ -69,7 +88,6 @@ const Booking: NextPageWithLayout = () => {
         });
       });
   };
-  const cancelBooking = (userId: number) => {};
 
   return (
     <>
@@ -103,8 +121,8 @@ const Booking: NextPageWithLayout = () => {
                 <th className="border px-4 py-2">User Name</th>
                 <th className="border px-4 py-2">Description</th>
                 <th className="border px-4 py-2">Address</th>
-                <th className="border px-4 py-2"> Date </th>
                 <th className="border px-4 py-2"> Status </th>
+                <th className="border px-4 py-2"> Date </th>
                 <th className="border px-4 py-2">Accept</th>
                 <th className="border px-4 py-2">Cancel</th>
               </tr>
@@ -117,14 +135,11 @@ const Booking: NextPageWithLayout = () => {
                   <td className="border px-4 py-2 w-fit">
                     {booking.description}
                   </td>
-                  <td className="border px-4 py-2">
-                    {" "}
-                    {booking.user[0].street}
-                  </td>
+                  <td className="border px-4 py-2">{booking.user[0].street}</td>
 
                   <td
                     className={`border px-4 py-2 ${
-                      booking.status === "active"
+                      booking.status === "accepted"
                         ? " bg-green-100 text-green-600"
                         : " bg-red-100 text-red-600"
                     }`}
@@ -136,20 +151,36 @@ const Booking: NextPageWithLayout = () => {
                   </td>
 
                   <td className="border px-4 py-2">
-                    <button
-                      onClick={() => acceptBooking(booking.id)}
-                      className="w-full h-full text-white font-bold  p-2 bg-teal-400 mx-auto cursor-pointer rounded-md"
-                    >
-                      Accept
-                    </button>
+                    {booking.status == "pending" ? (
+                      <button
+                        onClick={() => acceptBooking(booking.id)}
+                        className="w-full h-full text-white font-bold  p-2 bg-teal-400 mx-auto cursor-pointer rounded-md"
+                      >
+                        Accept
+                      </button>
+                    ) : (
+                      booking.status == "accepted" && (
+                        <button className="w-full h-full text-white font-bold  p-2 bg-teal-800 disabled: mx-auto cursor-pointer rounded-md">
+                          Accept
+                        </button>
+                      )
+                    )}
                   </td>
                   <td className="border px-4 py-2 ">
-                    <button
-                      onClick={() => cancelBooking(booking.id)}
-                      className="w-full h-full text-white font-bold  p-2 bg-red-500 mx-auto cursor-pointer rounded-md"
-                    >
-                      Cancel
-                    </button>
+                    {booking.status == "pending" ? (
+                      <button
+                        onClick={() => acceptBooking(booking.id)}
+                        className="w-full h-full text-white font-bold  p-2 bg-red-500 mx-auto cursor-pointer rounded-md"
+                      >
+                        Cancel
+                      </button>
+                    ) : (
+                      booking.status == "accepted" && (
+                        <button className="w-full h-full text-white font-bold  p-2 bg-red-900 disabled: mx-auto cursor-pointer rounded-md">
+                          Cancel
+                        </button>
+                      )
+                    )}
                   </td>
                 </tr>
               ))}
