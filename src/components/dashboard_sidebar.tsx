@@ -7,9 +7,10 @@ import {
   IconSettings,
   IconSquareLetterB,
   IconSquareLetterV,
-  IconUserSquare,
+  IconUser,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import React from "react";
 
 export default function Sidebar() {
   return (
@@ -33,7 +34,7 @@ export default function Sidebar() {
           </div>
           <div className="dashboard_item">
             <Link href="/dashboard/user" className="dashboard_text flex gap-6">
-              <IconUserSquare className=" w-6 h-6" />
+              <IconUser className="w-6 h-6" />
               Users
             </Link>
           </div>
