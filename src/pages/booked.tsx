@@ -14,18 +14,19 @@ function Booked() {
   const user_id: any = parseInt(userid, 10);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [vendor, setVendor] = useState<any>({});
+
   useEffect(() => {
     axios
-      .get(`${BASEURL}/vendor/${id}`)
+      .get(`${BASEURL}/vendor/detail`, {
+        params: { userId: user_id, vendorId: id },
+      })
       .then((response) => {
         setVendor(response.data);
       })
       .catch((error) => {
-        console.log(error);
         toast.error(error.response.message[0]);
       });
   }, [BASEURL]);
-  console.log(vendor);
   const openDialog = () => {
     setDialogOpen(true);
   };
