@@ -38,7 +38,7 @@ export interface Location {
 const Vendor: NextPageWithLayout = () => {
   const router = useRouter();
 
-  const [vendors, setVendors] = useState<Vendors[]>([{}]);
+  const [vendors, setVendors] = useState<Vendors[]>([]);
 
   const fetchVendors = useCallback(() => {
     axios
