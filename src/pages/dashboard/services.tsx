@@ -1,5 +1,5 @@
 import { NextPageWithLayout } from "@sewa/pages/_app";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import Layout from "@sewa/components/dashboard_layout";
 import { IconEdit, IconSearch, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/router";
@@ -15,7 +15,8 @@ interface Services {
 const Service: NextPageWithLayout = () => {
   const router = useRouter();
   const [services, setServices] = useState<Services[]>([]);
-  useEffect(() => {
+
+  const fetchServices = useCallback(() => {
     axios
       .get(`${BASEURL}/services`)
       .then((response) => {
@@ -25,6 +26,10 @@ const Service: NextPageWithLayout = () => {
         toast.error(err.response.data.message[0]);
       });
   }, [BASEURL]);
+
+  useEffect(() => {
+    fetchServices();
+  }, [fetchServices]);
   const handleEdit = (serviceId: number) => {
     router.push("/signup");
   };
@@ -32,10 +37,11 @@ const Service: NextPageWithLayout = () => {
     axios
       .delete(`${BASEURL}/services/${serviceId}`)
       .then((response) => {
-        setServices(response.data.message);
+        fetchServices();
+        toast.success(response.data.message, { position: "bottom-center" });
       })
       .catch((err) => {
-        toast.error(err.response.data.message[0]);
+        toast.error(err.response.data.message);
       });
   };
 
