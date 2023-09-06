@@ -11,6 +11,7 @@ import Footer from "@sewa//components/footer";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
+import { SnackbarProvider } from "notistack";
 
 const NotificationContext = createContext<any>(null);
 export function useNotification() {
@@ -47,6 +48,7 @@ function PublicLayout({ children }: { children: ReactElement }) {
       <main>
         <Navbar bookings={bookings} />
         {children}
+        <SnackbarProvider />
         <Footer />
       </main>
     </NotificationContext.Provider>
