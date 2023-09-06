@@ -10,14 +10,7 @@ export default function Navbar() {
         <span className="text-2xl font-medium tracking-wide text-gray-700">
           Dashboard
         </span>
-        <div className="relative  ">
-          <input
-            type="text"
-            className="w-68 h-9 border border-gray-300 rounded-xl px-10 nav "
-            placeholder="search player..."
-          />
-          <IconSearch className="absolute w-5 h-5 ml-3 -mt-7 text-gray-600" />
-        </div>
+
         <div className="flex items-center gap-6">
           <div className="relative cursor-pointer">
             <IconBell className="w-7 h-7 text-yellow-500" />
