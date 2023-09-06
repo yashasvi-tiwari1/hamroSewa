@@ -1,103 +1,39 @@
 import { NextPageWithLayout } from "@sewa/pages/_app";
-import { ReactElement } from "react";
+import { ReactElement, useCallback, useState } from "react";
 import Layout from "@sewa/components/dashboard_layout";
 import { IconEdit, IconSearch, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/router";
+import { BASEURL } from "@sewa/pages/api/apiContent";
+import axios from "axios";
+import { toast } from "react-toastify";
 
+interface booking {
+  id: number;
+  user_name: string;
+  vendor_name: string;
+  service_type: string;
+  description: string;
+  status: string;
+}
 const Booking: NextPageWithLayout = () => {
-  const services = [
-    {
-      id: "1",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "active",
-      description: "My house toilet outlet doesn't work properly",
-    },
-    {
-      id: "2",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "active",
-      description: "My house toilet outlet doesn't work properly",
-    },
-    {
-      id: "3",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "active",
+  const [booking, setBooking] = useState<booking[]>([]);
 
-      description: "My house toilet outlet doesn't work properly",
-    },
-    {
-      id: "4",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "inactive",
-
-      description: "My house toilet outlet doesn't work properly",
-    },
-    {
-      id: "5",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "active",
-
-      description: "My house toilet outlet doesn't work properly",
-    },
-    {
-      id: "6",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "active",
-
-      description: "My house toilet outlet doesn't work properly",
-    },
-    {
-      id: "7",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "inactive",
-
-      description: "My house toilet outlet doesn't work properly",
-    },
-    {
-      id: "8",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "inactive",
-      description: "My house toilet outlet doesn't work properly",
-    },
-    {
-      id: "9",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "inactive",
-      description: "My house toilet outlet doesn't work properly",
-    },
-    {
-      id: "10",
-      userName: "Yashasvi Tiwari",
-      vendorName: "Sabin Tiwari",
-      serviceType: "Plumbing",
-      status: "active",
-      description: "My house toilet outlet doesn't work properly",
-    },
-  ];
+  const fetchBooking = useCallback(() => {
+    axios
+      .get(`${BASEURL}/booking`)
+      .then((response) => {
+        setBooking(response.data);
+      })
+      .catch((error) => {
+        toast.error(error.response.data[0]);
+      });
+  }, []);
 
   const router = useRouter();
-  const handleEdit = (userId: string) => {
+  const handleEdit = (userId: number) => {
     router.push("/signup");
   };
-  const handleDelete = (userId: string) => {
+  const handleDelete = (userId: number) => {
     console.log(`delete user ${userId}`);
   };
 
@@ -140,31 +76,31 @@ const Booking: NextPageWithLayout = () => {
               </tr>
             </thead>
             <tbody>
-              {services.map((user) => (
-                <tr key={user.id}>
-                  <td className="border px-4 py-2"> {user.id} </td>
-                  <td className="border px-4 py-2"> {user.userName}</td>
-                  <td className="border px-4 py-2"> {user.vendorName}</td>
-                  <td className="border px-4 py-2"> {user.serviceType}</td>
-                  <td className="border px-4 py-2"> {user.description} </td>
+              {booking.map((bookings) => (
+                <tr key={bookings.id}>
+                  <td className="border px-4 py-2"> {bookings.id} </td>
+                  <td className="border px-4 py-2"> {bookings.user_name}</td>
+                  <td className="border px-4 py-2"> {bookings.vendor_name}</td>
+                  <td className="border px-4 py-2"> {bookings.service_type}</td>
+                  <td className="border px-4 py-2"> {bookings.description} </td>
                   <td
                     className={`border px-4 py-2 ${
-                      user.status === "active"
+                      bookings.status === "active"
                         ? " bg-green-100 text-green-600"
                         : " bg-red-100 text-red-600"
                     }`}
                   >
-                    {user.status}
+                    {bookings.status}
                   </td>
                   <td className="border px-4 py-2">
                     <IconEdit
-                      onClick={() => handleEdit(user.id)}
+                      // onClick={() => handleEdit(bookings.id)}
                       className="w-5 h-5 text-green-600 mx-auto cursor-pointer"
                     />
                   </td>
                   <td className="border px-4 py-2 ">
                     <IconTrash
-                      onClick={() => handleDelete(user.id)}
+                      onClick={() => handleDelete(bookings.id)}
                       className="w-5 h-5 text-red-700 mx-auto cursor-pointer"
                     />
                   </td>
