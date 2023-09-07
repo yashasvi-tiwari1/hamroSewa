@@ -158,11 +158,15 @@ const Booking: NextPageWithLayout = () => {
                       >
                         Accept
                       </button>
+                    ) : booking.status == "accepted" ? (
+                      <div className="py-2 px-6 bg-gray-400 rounded-md ">
+                        Accepted
+                      </div>
                     ) : (
-                      booking.status == "accepted" && (
-                        <button className="w-full h-full text-white font-bold  p-2 bg-teal-800 disabled: mx-auto cursor-pointer rounded-md">
-                          Accept
-                        </button>
+                      booking.status == "canceled" && (
+                        <div className="p-2 bg-gray-400 rounded-md">
+                          Not Accepted
+                        </div>
                       )
                     )}
                   </td>
@@ -174,11 +178,15 @@ const Booking: NextPageWithLayout = () => {
                       >
                         Cancel
                       </button>
+                    ) : booking.status == "accepted" ? (
+                      <div className="px-4  py-2 bg-gray-400 rounded-md">
+                        Cancel
+                      </div>
                     ) : (
-                      booking.status == "accepted" && (
-                        <button className="w-full h-full text-white font-bold  p-2 bg-red-900 disabled: mx-auto cursor-pointer rounded-md">
-                          Cancel
-                        </button>
+                      booking.status == "canceled" && (
+                        <div className="p-2 bg-gray-400 rounded-md">
+                          Canceled
+                        </div>
                       )
                     )}
                   </td>

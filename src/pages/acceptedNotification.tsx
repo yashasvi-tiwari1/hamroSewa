@@ -64,7 +64,6 @@ function AcceptedNotification() {
         amount: amt,
         status: "Paid",
       };
-      console.log("update ma aaxa");
       axios
         .put(`${BASEURL}/payment/${payId}`, payData)
         .then((response) => {
