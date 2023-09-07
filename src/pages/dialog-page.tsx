@@ -111,12 +111,14 @@ const CustomDialog: React.FC<DialogProps> = ({
                         provide the detail information about your problem.
                       </p>
                     </div>
-                    <div className="mt-4">
-                      <label className="text-lg">Select Booking Date</label>
-                      <div className="flex mt-4">
-                        <div className="flex flex-col">
+                    <div className="mt-6">
+                      <label className="text-lg font-semibold">
+                        Select Booking Date
+                      </label>
+                      <div className="flex mt-6">
+                        <div className="flex flex-col ">
                           <DatePicker
-                            className="DatePicker border p-2 rounded-md w-32"
+                            className="DatePicker border p-3 text-center text-white font-semibold rounded-md w-32"
                             minDate={new Date()}
                             selected={startDate}
                             onChange={(date: Date) => setStartDate(date)}
@@ -125,11 +127,11 @@ const CustomDialog: React.FC<DialogProps> = ({
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col bg-white mt-4">
+                    <div className="flex flex-col bg-white mt-8">
                       <label htmlFor="detail">Description</label>
                       <textarea
                         className="bg-white border"
-                        rows={4}
+                        rows={5}
                         cols={50}
                         placeholder="Please enter the details of your problem"
                         onChange={handle_description}
@@ -138,7 +140,7 @@ const CustomDialog: React.FC<DialogProps> = ({
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <div className="bg-gray-50 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6">
                 <button
                   type="button"
                   className="inline-flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 sm:ml-3 sm:w-auto"
