@@ -1,11 +1,12 @@
 import { NextPageWithLayout } from "@sewa/pages/_app";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import Layout from "@sewa/components/vendor_layout";
 import { IconSearch } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
+import { enqueueSnackbar } from "notistack";
 
 export interface User {
   id: number;
@@ -41,7 +42,7 @@ const Payment: NextPageWithLayout = () => {
   });
   const [amount, setAmount] = useState(0);
 
-  useEffect(() => {
+  const fetchPayment = useCallback(() => {
     const vendorId = localStorage.getItem("vendorId");
     axios
       .get(`${BASEURL}/vendor/payment/${vendorId}`)
@@ -53,6 +54,10 @@ const Payment: NextPageWithLayout = () => {
       });
   }, [BASEURL]);
 
+  useEffect(() => {
+    fetchPayment();
+  }, [fetchPayment]);
+
   const payment_detail = vendorPayment.payment;
   const payments = payment_detail.filter((pay) => {
     if (pay.booking.status == "accepted") {
@@ -60,6 +65,28 @@ const Payment: NextPageWithLayout = () => {
     }
   });
 
+  const updatePayment = (payId: number, amount: string) => {
+    const updateData = {
+      amount,
+      status: "defined",
+    };
+
+    axios
+      .put(`${BASEURL}/payment/${payId}`, updateData)
+      .then((response) => {
+        enqueueSnackbar(response.data.message, {
+          anchorOrigin: { horizontal: "center", vertical: "bottom" },
+          variant: "success",
+        });
+        fetchPayment();
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.response?.data?.message, {
+          anchorOrigin: { horizontal: "center", vertical: "bottom" },
+          variant: "error",
+        });
+      });
+  };
   const router = useRouter();
   const handleEdit = (paymentId: number) => {
     router.push("/signup");
@@ -104,37 +131,13 @@ const Payment: NextPageWithLayout = () => {
             </thead>
             <tbody>
               {payments.map((payment) => (
-                <tr key={payment.id}>
-                  <td className="border px-4 py-2"> {payment.id} </td>
-                  <td className="border px-4 py-2">
-                    {payment.booking.user[0].name}
-                  </td>
-
-                  <td className="border px-4 py-2">
-                    <input type="text" value={amount} onChange={} />
-                    {payment.amount}
-                  </td>
-                  <td className="border px-4 py-2">
-                    {payment.booking.description}
-                  </td>
-                  <td
-                    className={`border px-4 py-2 ${
-                      payment.status === "paid"
-                        ? " bg-green-100 text-green-600"
-                        : " bg-red-100 text-red-600"
-                    }`}
-                  >
-                    {payment.status}
-                  </td>
-                  <td className="border px-4 py-2">
-                    <button
-                      onClick={() => handleEdit(payment.id)}
-                      className="py-2 px-4 rounded-md text-white bg-teal-400 mx-auto cursor-pointer"
-                    >
-                      Update
-                    </button>
-                  </td>
-                </tr>
+                <ShowPayments
+                  payment={payment}
+                  val={payment.amount}
+                  updateAmount={(value: any) =>
+                    updatePayment(payment.id, value)
+                  }
+                />
               ))}
             </tbody>
           </table>
@@ -146,4 +149,50 @@ const Payment: NextPageWithLayout = () => {
 Payment.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
+
+function ShowPayments({ payment, val, updateAmount }: any) {
+  const [amount, setAmount] = useState(val);
+  function handleChange(e: any) {
+    setAmount(e.target.value);
+  }
+  return (
+    <tr key={payment.id}>
+      <td className="border px-4 py-2"> {payment.id} </td>
+      <td className="border px-4 py-2">{payment.booking.user[0].name}</td>
+
+      <td className="border px-4 py-2">
+        <input type="text" value={amount} onChange={handleChange} />
+      </td>
+      <td className="border px-4 py-2">{payment.booking.description}</td>
+      <td
+        className={`border px-4 py-2 ${
+          payment.status === "defined" || payment.status === "paid"
+            ? " bg-green-100 text-green-600"
+            : " bg-red-100 text-red-600"
+        }`}
+      >
+        {payment.status}
+      </td>
+      {val != amount ? (
+        <td className="border px-4 py-2">
+          <button
+            onClick={() => updateAmount(amount)}
+            className="py-2 px-4 rounded-md text-white bg-teal-400 mx-auto cursor-pointer"
+          >
+            Update
+          </button>
+        </td>
+      ) : (
+        <td className="border px-4 py-2">
+          <button
+            onClick={() => updateAmount(payment.id)}
+            className="py-2 px-4 rounded-md text-white bg-gray-400 mx-auto cursor-pointer"
+          >
+            Update
+          </button>
+        </td>
+      )}
+    </tr>
+  );
+}
 export default Payment;
