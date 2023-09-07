@@ -73,23 +73,21 @@ function PendingNotification() {
               return (
                 <div
                   key={booking.id}
-                  className="flex items-center p-4 bg-white rounded-md shadow-md"
+                  className="flex items-center p-2 bg-white rounded-md shadow-md"
                 >
                   <div className="w-1/5 text-center">
-                    <h2 className="text-xl font-semibold text-teal-700">
+                    <h2 className="text-lg font-semibold text-teal-700">
                       {booking.vendor[0].service_type}
                     </h2>
                   </div>
-                  <div className="w-1/5 text-lg font-semibold text-center">
+                  <div className="w-1/5 text-lg  text-center">
                     <p>{booking.vendor[0].name}</p>
                   </div>
                   <div className="w-1/5 text-center">
-                    <p className="text-lg font-semibold">
-                      {booking.vendor[0].contact}
-                    </p>
+                    <p className="text-lg ">{booking.vendor[0].contact}</p>
                   </div>
                   <div className="w-1/5 text-center">
-                    <p className="text-lg font-semibold">{showDate}</p>
+                    <p className="text-lg ">{showDate}</p>
                   </div>
                   <div className="flex gap-4 w-1/5">
                     <button
@@ -103,7 +101,7 @@ function PendingNotification() {
                     >
                       Details
                     </button>
-                    <button className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                    <button className="px-4 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">
                       Cancel
                     </button>
                   </div>

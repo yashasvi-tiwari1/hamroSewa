@@ -119,8 +119,8 @@ function AcceptedNotification() {
               Notification Accepted
             </button>
           </div>
-          <div className="w-full border-2 border-b-0 flex gap-5 h-fit p-4 rounded-md">
-            {payment.map((pay) => {
+          <div className="w-full grid  border-2 grid-cols-3 border-b-0 flex gap-5 h-fit p-10 rounded-md ">
+            {payment.map((pay, index) => {
               const date = pay.booking.booked_date.toString();
               const showDate = date.slice(0, 10);
 
@@ -137,16 +137,16 @@ function AcceptedNotification() {
               const pid = pid_mid.length < 6 ? pid_mid : pid_mid.slice(0, 5);
               console.log(pid);
               return (
-                <div className="w-5/12 h-fit flex flex-col items-center p-5 rounded-lg bg-gray-200">
+                <div className="w-full h-fit  flex-col   items-center p-5 rounded-lg bg-gray-200">
                   <div className="font-bold text-2xl text-teal-700 mb-4">
                     Payment Details
                   </div>
                   <div className="flex flex-col gap-2 w-full">
-                    <div className="flex justify-between bg-white p-2 rounded-md shadow-lg">
+                    <div className="flex justify-between bg-white p-2 w-full rounded-md shadow-lg">
                       <div className="font-semibold">Service</div>
                       <div>{pay.booking.vendor[0].service_type}</div>
                     </div>
-                    <div className="flex justify-between bg-white p-2 rounded-md shadow-lg">
+                    <div className="flex justify-between bg-white p-2  w-full rounded-md shadow-lg">
                       <div className="font-semibold">Vendor</div>
                       <div>{pay.booking.vendor[0].name}</div>
                     </div>
@@ -164,18 +164,18 @@ function AcceptedNotification() {
                     {pay.status === "undefined" ? (
                       <>
                         <div className="flex justify-between w-full">
-                          <div className="font-semibold rounded-md bg-teal-600 hover:bg-teal-400 p-2 text-center text-white">
+                          <div className="font-semibold rounded-md bg-teal-700 p-2 text-center text-white">
                             {pay.booking.status}
                           </div>
-                          <div className="font-semibold rounded-md bg-red-600 text-white  hover:bg-red-400  p-2">
+                          <div className="font-semibold rounded-md bg-red-700 text-white   p-2">
                             {pay.status}
                           </div>
                         </div>
                       </>
                     ) : (
                       <>
-                        <div className="font-semibold rounded-md bg-red-300 p-2 text-center">
-                          Amount: {pay.amount}
+                        <div className="font-semibold rounded-md bg-red-300 p-2  text-center">
+                          Rs: {pay.amount}
                         </div>
                         <div>
                           <form
@@ -213,7 +213,7 @@ function AcceptedNotification() {
                             />
                             <button
                               onClick={() => updatePayment(pay)}
-                              className="bg-teal-600 text-white px-8 py-2 rounded-md hover:bg-teal-500"
+                              className="bg-teal-600 text-white px-8 py-2 rounded-md hover:bg-teal-500 ml-4"
                             >
                               Esewa Pay
                             </button>
