@@ -184,42 +184,68 @@ const NotificationPopup = React.forwardRef<
       document.removeEventListener("mousedown", handleClick);
     };
   }, []);
-
+  const [visibleNotifications, setVisibleNotifications] = useState(4);
+  const navigate = useRouter();
+  const showMoreNotifications = () => {
+    navigate.push("/pendingNotification");
+    onClose();
+  };
   return (
     <div
       ref={divRef}
-      className="absolute bg-white z-50 top-10 right-0 rounded-md border p-5 shadow-md"
+      className="absolute bg-white z-50 top-10 right-0 rounded-md border p-3 shadow-md"
     >
-      <div className="sm:flex flex-col gap-2 sm:items-start">
-        <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-          <h3 className="text-2xl font-semibold leading-6 text-gray-900">
-            Notifications
-          </h3>
-        </div>
-        <div className="w-full flex flex-col gap-2">
-          {bookings.map((booking: any) => {
-            const date = booking.booked_date.toString();
-            const showDate = date.slice(0, 10);
-            return (
-              <button onClick={gotoNotification}>
-                <div className="flex w-full p-2 gap-4 overflow-hidden rounded-md border-2">
-                  {booking.status == "pending" ? (
-                    <div className="bg-red-500 text-white w-1/3 rounded-md p-1 text-xs">
-                      {booking.status}
+      <div className="absolute right-5 top-0 mt-[-10px] w-0 h-0 border-4 border-solid border-transparent border-b-white ">
+        {" "}
+      </div>
+      <div className="bg-white rounded-md border p-3 shadow-md">
+        <div className="sm:flex flex-col gap-2 sm:items-start">
+          <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <h3 className="text-lg font-semibold leading-6 text-gray-900">
+              Notifications
+            </h3>
+          </div>
+          <div className="w-max flex flex-col gap-2">
+            {bookings
+              .slice(0, visibleNotifications)
+              .map((booking: any, index: number) => {
+                const date = booking.booked_date.toString();
+                const showDate = date.slice(0, 10);
+                return (
+                  <button
+                    key={index}
+                    onClick={gotoNotification}
+                    className="text-center"
+                  >
+                    <div className="flex w-full p-2 gap-4 overflow-hidden rounded-md border-2 items-center ">
+                      {booking.status == "pending" ? (
+                        <div className="bg-red-500 text-white w-1/3 rounded-md p-2 text-xs">
+                          {booking.status}
+                        </div>
+                      ) : (
+                        <div className="bg-teal-600 text-white w-1/3 rounded-md p-2 text-xs">
+                          {booking.status}
+                        </div>
+                      )}
+                      <div className="bg-teal-400 rounded-md w-1/3 p-2 text-xs font-semibold">
+                        {booking.vendor[0].service_type}
+                      </div>
+                      <div className=" p-1 text-xs font-semibold w-full">
+                        {showDate}
+                      </div>
                     </div>
-                  ) : (
-                    <div className="bg-teal-600 text-white w-1/3 rounded-md p-1 text-xs">
-                      {booking.status}
-                    </div>
-                  )}
-                  <div className="bg-teal-400 rounded-md w-1/3 p-1 text-xs font-semibold">
-                    {booking.vendor[0].service_type}
-                  </div>
-                  <div className=" p-1 text-xs font-semibold">{showDate}</div>
-                </div>
+                  </button>
+                );
+              })}
+            {visibleNotifications < bookings.length && (
+              <button
+                onClick={showMoreNotifications}
+                className="text-center text-teal-700 cursor-pointer text-semibold text-base"
+              >
+                Show More...
               </button>
-            );
-          })}
+            )}
+          </div>
         </div>
       </div>
     </div>
