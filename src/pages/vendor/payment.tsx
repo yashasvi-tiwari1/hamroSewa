@@ -111,7 +111,7 @@ const Payment: NextPageWithLayout = () => {
                   </td>
 
                   <td className="border px-4 py-2">
-                    <input type="text" value={amount} />
+                    <input type="text" value={amount} onChange={} />
                     {payment.amount}
                   </td>
                   <td className="border px-4 py-2">
