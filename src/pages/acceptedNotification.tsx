@@ -142,25 +142,25 @@ function AcceptedNotification() {
                     Payment Details
                   </div>
                   <div className="flex flex-col gap-2 w-full">
-                    <div className="flex justify-between bg-white p-2 rounded-md">
+                    <div className="flex justify-between bg-white p-2 rounded-md shadow-lg">
                       <div className="font-semibold">Service</div>
                       <div>{pay.booking.vendor[0].service_type}</div>
                     </div>
-                    <div className="flex justify-between bg-white p-2 rounded-md">
+                    <div className="flex justify-between bg-white p-2 rounded-md shadow-lg">
                       <div className="font-semibold">Vendor</div>
                       <div>{pay.booking.vendor[0].name}</div>
                     </div>
-                    <div className="flex justify-between bg-white p-2 rounded-md">
+                    <div className="flex justify-between bg-white p-2 rounded-md shadow-lg">
                       <div className="font-semibold">Contact</div>
                       <div>{pay.booking.vendor[0].contact}</div>
                     </div>
-                    <div className="flex justify-between bg-white p-2 rounded-md">
+                    <div className="flex justify-between bg-white p-2 rounded-md shadow-lg">
                       <div className="font-semibold">Booking</div>
                       <div>{showDate}</div>
                     </div>
                   </div>
 
-                  <div className=" flex mt-4 w-full px-12">
+                  <div className=" flex mt-6 w-full px-12">
                     {pay.status === "undefined" ? (
                       <>
                         <div className="flex justify-between w-full">
