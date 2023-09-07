@@ -1,25 +1,62 @@
-import { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import VendorSignup from "@sewa/components/vendorSignup";
+import { useLoadScript } from "@react-google-maps/api";
+import axios from "axios";
+import { BASEURL } from "@sewa/pages/api/apiContent";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 type FormData = {
-  fullName: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
   contact: string;
   state: string;
   city: string;
-  postalCode: string;
+  postal_code: string;
   street: string;
-  houseNumber: string;
+  number: string;
 };
 const SignUp = () => {
   const [selected, setSelected] = useState(0);
+  const [currentLocation, setCurrentLocation] = useState<any>(null);
+
+  useEffect(() => {
+    // Retrieve user's location using Geolocation API
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCurrentLocation({ lat: latitude, lng: longitude });
+      },
+      (error) => {
+        console.log("Error getting location:", error);
+      }
+    );
+  }, []);
+  console.log(currentLocation);
+
+  const mapOptions = useMemo<google.maps.MapOptions>(
+    () => ({
+      disableDefaultUI: false,
+      clickableIcons: true,
+      scrollwheel: true,
+    }),
+    []
+  );
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+  });
+
+  if (!isLoaded) {
+    return <p>Loading...</p>;
+  }
+
   const handleDivClick = (index: number) => {
     setSelected(index);
   };
@@ -49,16 +86,22 @@ const SignUp = () => {
           </div>
         </div>
         <div className="">
-          {selected === 0 ? <Customer /> : <VendorSignup />}
+          {selected === 0 ? (
+            <Customer currentLocation={currentLocation} />
+          ) : (
+            <VendorSignup currentLocation={currentLocation} />
+          )}
         </div>
       </div>
     </div>
   );
 };
-function Customer() {
+function Customer({ currentLocation }: any) {
+  const navigate = useRouter();
+
   const validationSchema = z
     .object({
-      fullName: z.string().min(1, { message: "Full name is required" }).max(60),
+      name: z.string().min(1, { message: "Full name is required" }).max(60),
       email: z
         .string()
         .email({ message: "Invalid email format" })
@@ -80,13 +123,13 @@ function Customer() {
         .max(10),
       state: z.string().min(1, { message: "State is required" }).max(30),
       city: z.string().min(1, { message: "City is required" }).max(30),
-      postalCode: z
+      postal_code: z
         .string()
         .min(1, { message: "Postal_code is required" })
         .min(5, { message: "Postal code must be at least 5 digits " })
         .max(10),
       street: z.string().min(1, { message: "Street is required" }).max(30),
-      houseNumber: z
+      number: z
         .string()
         .min(1, { message: "House number is required" })
         .max(20),
@@ -104,7 +147,23 @@ function Customer() {
     resolver: zodResolver(validationSchema),
   });
   const formSumbit = (data: FormData) => {
-    console.log(data);
+    axios
+      .post(`${BASEURL}/user`, {
+        ...data,
+        lat: currentLocation.lat,
+        lng: currentLocation.lng,
+      })
+      .then((response) => {
+        toast.success(response?.data?.msg);
+        console.log(response?.data?.msg);
+        localStorage.setItem("userId", response.data.user_id);
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+        navigate.push({ pathname: "/", query: { name: response.data.name } });
+      })
+      .catch((err) => {
+        console.log(err?.response?.data.message);
+      });
   };
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -122,9 +181,9 @@ function Customer() {
                 type="text"
                 placeholder="Full Name"
                 className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full "
-                {...register("fullName")}
+                {...register("name")}
               />
-              {errors.fullName && <span>{errors.fullName.message}</span>}
+              {errors.name && <span>{errors.name.message}</span>}
             </div>
             <div className="mb-5 w-full">
               <input
@@ -220,9 +279,9 @@ function Customer() {
                 type="text"
                 placeholder="Postal_Code"
                 className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
-                {...register("postalCode")}
+                {...register("postal_code")}
               />
-              {errors.postalCode && <span>{errors.postalCode.message}</span>}
+              {errors.postal_code && <span>{errors.postal_code.message}</span>}
             </div>
           </div>
           <div className="flex gap-4">
@@ -240,9 +299,9 @@ function Customer() {
                 type="text"
                 placeholder="House Number"
                 className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
-                {...register("houseNumber")}
+                {...register("number")}
               />
-              {errors.houseNumber && <span>{errors.houseNumber.message}</span>}
+              {errors.number && <span>{errors.number.message}</span>}
             </div>
           </div>
           <div className="mb-6">

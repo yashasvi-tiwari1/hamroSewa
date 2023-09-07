@@ -44,7 +44,7 @@ const Vendor: NextPageWithLayout = () => {
     axios
       .get(`${BASEURL}/vendor`)
       .then((response) => {
-        setVendors(response.data);
+        setVendors(response.data.data);
         // console.log(response.data);
       })
       .catch((err) => {

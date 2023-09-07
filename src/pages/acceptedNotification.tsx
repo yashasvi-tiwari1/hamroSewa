@@ -213,7 +213,7 @@ function AcceptedNotification() {
                             />
                             <button
                               onClick={() => updatePayment(pay)}
-                              className="bg-teal-600 text-white px-8 py-2 rounded-md hover:bg-teal-500 ml-4"
+                              className="bg-teal-600 text-white px-2 py-2 rounded-md hover:bg-teal-500 ml-4"
                             >
                               Esewa Pay
                             </button>

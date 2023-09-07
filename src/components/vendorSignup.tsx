@@ -4,25 +4,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import Link from "next/link";
+import axios from "axios";
+import { BASEURL } from "@sewa/pages/api/apiContent";
+import { useRouter } from "next/router";
 
 type FormData = {
-  fullName: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
   contact: string;
   state: string;
   city: string;
-  postalCode: string;
+  postal_code: string;
   street: string;
-  houseNumber: string;
+  number: string;
   description: string;
-  service: string;
+  service_type: string;
 };
-function VendorSignup() {
+function VendorSignup({ currentLocation }: any) {
+  const navigate = useRouter();
+
   const validationSchema = z
     .object({
-      fullName: z.string().min(1, { message: "Full name is required" }).max(60),
+      name: z.string().min(1, { message: "Full name is required" }).max(60),
       email: z
         .string()
         .email({ message: "Invalid email format" })
@@ -44,13 +49,13 @@ function VendorSignup() {
         .max(10),
       state: z.string().min(1, { message: "State is required" }).max(30),
       city: z.string().min(1, { message: "City is required" }).max(30),
-      postalCode: z
+      postal_code: z
         .string()
         .min(1, { message: "Postal_code is required" })
         .min(5, { message: "Postal code must be at least 5 digits " })
         .max(10),
       street: z.string().min(1, { message: "Street is required" }).max(30),
-      houseNumber: z
+      number: z
         .string()
         .min(1, { message: "House number is required" })
         .max(20),
@@ -58,7 +63,7 @@ function VendorSignup() {
         .string()
         .min(1, { message: "Description is required" })
         .max(255),
-      service: z.string(),
+      service_type: z.string(),
     })
     .partial()
     .refine((data) => data.password === data.confirmPassword, {
@@ -74,6 +79,26 @@ function VendorSignup() {
   });
   const formSumbit = (data: FormData) => {
     console.log(data);
+    axios
+      .post(`${BASEURL}/vendor`, {
+        ...data,
+        lat: currentLocation.lat,
+        lng: currentLocation.lng,
+      })
+      .then((response) => {
+        console.log(response?.data.msg);
+        console.log(response?.data);
+        localStorage.setItem("vendorId", response.data.vendor_id);
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+        navigate.push({
+          pathname: "/vendor",
+          query: { name: response.data.name },
+        });
+      })
+      .catch((err) => {
+        console.log(err?.response?.message);
+      });
   };
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -90,9 +115,9 @@ function VendorSignup() {
                 type="text"
                 placeholder="Full Name"
                 className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full "
-                {...register("fullName")}
+                {...register("name")}
               />
-              {errors.fullName && <span>{errors.fullName.message}</span>}
+              {errors.name && <span>{errors.name.message}</span>}
             </div>
             <div className="mb-5 w-full">
               <input
@@ -188,9 +213,9 @@ function VendorSignup() {
                 type="text"
                 placeholder="Postal_Code"
                 className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
-                {...register("postalCode")}
+                {...register("postal_code")}
               />
-              {errors.postalCode && <span>{errors.postalCode.message}</span>}
+              {errors.postal_code && <span>{errors.postal_code.message}</span>}
             </div>
           </div>
           <div className="flex gap-4">
@@ -208,18 +233,18 @@ function VendorSignup() {
                 type="text"
                 placeholder="House Number"
                 className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
-                {...register("houseNumber")}
+                {...register("number")}
               />
-              {errors.houseNumber && <span>{errors.houseNumber.message}</span>}
+              {errors.number && <span>{errors.number.message}</span>}
             </div>
           </div>
           <div className="mb-5 w-full">
             <select
               placeholder="Select Service_Type"
               className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
+              {...register("service_type")}
             >
               <option value="" disabled selected>
-                {" "}
                 Select an Service Type
               </option>
               <option value="plumber">Plumber</option>
@@ -233,7 +258,7 @@ function VendorSignup() {
               <option value="welder">Welder</option>
               <option value="helper">Helper</option>
             </select>
-            {errors.service && <span>{errors.service.message}</span>}
+            {errors.service_type && <span>{errors.service_type.message}</span>}
           </div>
           <div className="mb-5 w-full">
             <textarea

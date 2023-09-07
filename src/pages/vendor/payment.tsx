@@ -78,7 +78,6 @@ const Payment: NextPageWithLayout = () => {
           anchorOrigin: { horizontal: "center", vertical: "bottom" },
           variant: "success",
         });
-        fetchPayment();
       })
       .catch((err) => {
         enqueueSnackbar(err.response?.data?.message, {

@@ -8,7 +8,7 @@ const Login = () => {
   return (
     <div className="bg-gray-300 flex justify-center h-screen">
       <div className="flex p-20 w-[900px] justify-center drop-shadow-xl ">
-        <div className="w-2/5 rounded-l-xl bg-white overflow-hidden">
+        <div className="w-2/5 rounded-l-xl bg-white overflow-hidden h-fit">
           <Image
             src="/assets/logo.png"
             alt="logo"
@@ -19,18 +19,18 @@ const Login = () => {
           <Image
             src="/assets/login.jpg"
             alt="services image"
-            height={500}
+            height={400}
             width={300}
-            className="w-full h-full object-cover rounded-r-lg drop-shadow-lg"
+            className="w-fit h-fit  rounded-t-lg drop-shadow-lg"
           />
         </div>
 
-        <div className="w-3/5 bg-white p-10 rounded-r-xl">
-          <p className="font-bold text-2xl text-center mb-10">Welcome Back!</p>
+        <div className="w-3/5 bg-white p-5 rounded-r-xl h-fit">
+          <p className="font-bold text-2xl text-center mb-10">Welcome</p>
           <p className="text-teal-700 font-semibold mb-5">
             Sign in to Hamro Sewa
           </p>
-          <form action="">
+          <form action="http://localhost:3000">
             <div className="mb-5">
               <input
                 type="text"
@@ -76,7 +76,6 @@ const Login = () => {
                 type="submit"
                 className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-6 rounded"
               >
-                {" "}
                 Sign In
               </button>
             </div>
@@ -89,7 +88,7 @@ const Login = () => {
           <div className="-mt-5  py-1 px-2 flex gap-2  text-right  float-right text-gray-700 ">
             <span> Not a member?</span>
             <Link href="/signup" className="font-semibold ">
-              <u>Sign Up Now</u>{" "}
+              <u>Sign Up Now</u>
             </Link>
           </div>
         </div>
