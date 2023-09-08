@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { enqueueSnackbar } from "notistack";
+import { toast } from "react-toastify";
 
 interface User {
   id: number;
@@ -27,39 +28,54 @@ const Booking: NextPageWithLayout = () => {
   const router = useRouter();
 
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [search, setSearch] = useState("");
 
   const fetchBookings = useCallback(() => {
-    const vendorId = localStorage.getItem("vendorId");
-
-    axios
-      .get(`${BASEURL}/vendor/booking/${vendorId}`)
-      .then((response) => {
-        setBookings(response.data);
-        // console.log(response.data);
-      })
-      .catch((err) => {
-        console.log(err.response.data.message);
-        enqueueSnackbar(err.response.data.message, {
-          anchorOrigin: { horizontal: "center", vertical: "bottom" },
-          variant: "error",
+    const vendorInfo = localStorage.getItem("vendorInfo");
+    if (vendorInfo) {
+      const vendor = JSON.parse(vendorInfo);
+      axios
+        .get(`${BASEURL}/vendor/booking/${vendor.vendor_id}`)
+        .then((response) => {
+          setBookings(response.data);
+          // console.log(response.data);
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+          enqueueSnackbar(err.response.data.message, {
+            anchorOrigin: { horizontal: "center", vertical: "bottom" },
+            variant: "error",
+          });
         });
-      });
+    }
   }, [BASEURL]);
   console.log(bookings);
 
   useEffect(() => {
-    localStorage.setItem("vendorId", "5");
-
     fetchBookings();
   }, [fetchBookings]);
 
+  const handleSearch = (e: any) => {
+    setSearch(e.target.value);
+    console.log(e.target.value);
+    if (e.target.value != "") {
+      axios
+        .get(`${BASEURL}//search/${e.target.value}`)
+        .then((response) => {
+          setBookings(response.data);
+        })
+        .catch((err) => toast.error(err?.response?.data?.message));
+    } else {
+      fetchBookings();
+    }
+    // console.log(employee);
+  };
   const acceptBooking = (bookingId: number) => {
     axios
       .patch(`${BASEURL}/bookings/accept/${bookingId}`, { status: "accepted" })
       .then((response) => {
         enqueueSnackbar(response?.data.message, {
           variant: "success",
-          anchorOrigin: { horizontal: "center", vertical: "bottom" },
         });
         fetchBookings();
       })
@@ -67,7 +83,6 @@ const Booking: NextPageWithLayout = () => {
         console.log(err.response);
         enqueueSnackbar(err.response?.data?.message, {
           variant: "error",
-          anchorOrigin: { horizontal: "center", vertical: "bottom" },
         });
       });
   };
@@ -109,6 +124,7 @@ const Booking: NextPageWithLayout = () => {
               type="search"
               placeholder="Search services ..."
               className="p-2 border rounded-lg px-12 "
+              onChange={handleSearch}
             />
             <IconSearch className="absolute -mt-8  ml-3 text-gray-500" />
           </div>

@@ -34,16 +34,20 @@ function PendingNotification() {
     },
   ]);
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    axios
-      .get(`${BASEURL}/user/userBookings/${userId}`)
-      .then((response) => {
-        setUserBookings(response.data);
-      })
-      .catch((error) => {
-        toast.error(error.response);
-      });
+    const userId = localStorage.getItem("userInfo");
+    if (userId) {
+      const userInfo = JSON.parse(userId);
+      axios
+        .get(`${BASEURL}/user/userBookings/${userInfo.user_Id}`)
+        .then((response) => {
+          setUserBookings(response.data);
+        })
+        .catch((error) => {
+          toast.error(error.response);
+        });
+    }
   }, [BASEURL]);
+
   const bookings = userBookings.filter((book) => {
     if (book.status == "pending") {
       return book;

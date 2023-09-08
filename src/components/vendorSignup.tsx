@@ -7,6 +7,7 @@ import Link from "next/link";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 type FormData = {
   name: string;
@@ -86,18 +87,15 @@ function VendorSignup({ currentLocation }: any) {
         lng: currentLocation.lng,
       })
       .then((response) => {
-        console.log(response?.data.msg);
-        console.log(response?.data);
-        localStorage.setItem("vendorId", response.data.vendor_id);
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.refreshToken);
+        toast.success(response?.data?.msg);
+        localStorage.setItem("vendorInfo", JSON.stringify(response?.data));
         navigate.push({
           pathname: "/vendor",
           query: { name: response.data.name },
         });
       })
       .catch((err) => {
-        console.log(err?.response?.message);
+        toast.error(err?.response?.data?.message);
       });
   };
 

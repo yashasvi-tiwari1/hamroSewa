@@ -2,9 +2,11 @@ import "@sewa/styles/globals.css";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { NextPage } from "next";
-import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "next-themes";
 import "swiper/css";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { SnackbarProvider } from "notistack";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -19,11 +21,26 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
-      <ToastContainer />
-
-      <ThemeProvider enableSystem={true} attribute={"class"}>
-        {getLayout(<Component {...pageProps} />)}
-      </ThemeProvider>
+      <SnackbarProvider
+        autoHideDuration={4000}
+        anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+      >
+        <ThemeProvider enableSystem={true} attribute={"class"}>
+          {getLayout(<Component {...pageProps} />)}
+          <ToastContainer
+            position="bottom-center"
+            autoClose={4000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </ThemeProvider>
+      </SnackbarProvider>
     </>
   );
 }

@@ -42,12 +42,12 @@ const CustomDialog: React.FC<DialogProps> = ({
     axios
       .post(`${BASEURL}/bookings`, data)
       .then((response) => {
-        toast.success(response.data.message);
+        toast.success(response?.data.msg);
         getBookings();
       })
       .catch((error) => {
-        console.log(error);
-        toast.error(error.response.data.message[0]);
+        console.log(error.response);
+        toast.error(error?.response?.data?.message);
       });
     router.push("/");
   };

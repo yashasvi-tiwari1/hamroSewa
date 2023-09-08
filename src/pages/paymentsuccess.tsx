@@ -68,16 +68,10 @@ const PaymentSuccess: React.FC<DialogProps> = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   className="inline-flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 sm:ml-3 sm:w-auto"
-                >
-                  Confirm
-                </button>
-                <button
-                  type="button"
-                  className="mt-3 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-700 sm:mt-0 sm:w-auto"
                   onClick={onClose}
                   ref={cancelButtonRef}
                 >
-                  Cancel
+                  Ok
                 </button>
               </div>
             </div>

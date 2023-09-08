@@ -43,15 +43,18 @@ const Payment: NextPageWithLayout = () => {
   const [amount, setAmount] = useState(0);
 
   const fetchPayment = useCallback(() => {
-    const vendorId = localStorage.getItem("vendorId");
-    axios
-      .get(`${BASEURL}/vendor/payment/${vendorId}`)
-      .then((response) => {
-        setVendorPayment(response.data);
-      })
-      .catch((error) => {
-        toast.error(error.response.data);
-      });
+    const vendorInfo = localStorage.getItem("vendorInfo");
+    if (vendorInfo) {
+      const vendor = JSON.parse(vendorInfo);
+      axios
+        .get(`${BASEURL}/vendor/payment/${vendor.vendor_id}`)
+        .then((response) => {
+          setVendorPayment(response.data);
+        })
+        .catch((error) => {
+          toast.error(error.response.data);
+        });
+    }
   }, [BASEURL]);
 
   useEffect(() => {
@@ -74,14 +77,13 @@ const Payment: NextPageWithLayout = () => {
     axios
       .put(`${BASEURL}/payment/${payId}`, updateData)
       .then((response) => {
-        enqueueSnackbar(response.data.message, {
-          anchorOrigin: { horizontal: "center", vertical: "bottom" },
+        enqueueSnackbar(response?.data?.msg, {
           variant: "success",
         });
+        fetchPayment();
       })
       .catch((err) => {
         enqueueSnackbar(err.response?.data?.message, {
-          anchorOrigin: { horizontal: "center", vertical: "bottom" },
           variant: "error",
         });
       });

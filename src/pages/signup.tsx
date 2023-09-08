@@ -159,6 +159,7 @@ function Customer({ currentLocation }: any) {
         localStorage.setItem("userId", response.data.user_id);
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
+        console.log(response.data);
         navigate.push({ pathname: "/", query: { name: response.data.name } });
       })
       .catch((err) => {
@@ -284,6 +285,7 @@ function Customer({ currentLocation }: any) {
               {errors.postal_code && <span>{errors.postal_code.message}</span>}
             </div>
           </div>
+
           <div className="flex gap-4">
             <div className="mb-5 w-full">
               <input

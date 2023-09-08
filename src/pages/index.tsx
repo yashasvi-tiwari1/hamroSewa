@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import PublicLayout from "@sewa/site_layouts/publicLayout";
 import Layout from "@sewa/components/layout";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NextPageWithLayout } from "@sewa/pages/_app";
 import Landing from "@sewa/components/landing";
@@ -18,7 +17,6 @@ const Home: NextPageWithLayout = () => {
         <Card />
         <VendorRecommendation />
       </Layout>
-      <ToastContainer />
     </>
   );
 };

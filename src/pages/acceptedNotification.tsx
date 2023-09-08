@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
-import PublicLayout from "@sewa/site_layouts/publicLayout";
+import PublicLayout, { useNotification } from "@sewa/site_layouts/publicLayout";
 import PaymentSuccess from "@sewa/pages/paymentsuccess";
 
 export interface Vendor {
@@ -42,6 +42,8 @@ function AcceptedNotification() {
     id: 0,
     payment: [],
   });
+  const { getBookings } = useNotification();
+
   const [success, setSuccess] = useState("");
 
   const [isPaymentInfo, setIsPaymentInfo] = useState(false);
@@ -59,7 +61,8 @@ function AcceptedNotification() {
 
   useEffect(() => {
     if (q == "su") {
-      const payId = oid?.slice(0, 1);
+      openInfo();
+      const payId = oid?.slice(3, oid?.length);
       const payData = {
         amount: amt,
         status: "Paid",
@@ -67,39 +70,38 @@ function AcceptedNotification() {
       axios
         .put(`${BASEURL}/payment/${payId}`, payData)
         .then((response) => {
-          setSuccess(response.data);
-          console.log(response);
+          getBookings();
+
           openInfo();
         })
-        .catch((error) => {
-          toast.error(error.response.data);
+        .catch((err) => {
+          toast.error(err.response.data);
         });
     }
   }, [q]);
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    axios
-      .get(`${BASEURL}/user/userPayment/${userId}`)
-      .then((response) => {
-        setUserPayment(response.data);
-      })
-      .catch((error) => {
-        toast.error(error.response.data);
-      });
+    const userId = localStorage.getItem("userInfo");
+    if (userId) {
+      const userInfo = JSON.parse(userId);
+      axios
+        .get(`${BASEURL}/user/userPayment/${userInfo.user_Id}`)
+        .then((response) => {
+          setUserPayment(response.data);
+        })
+        .catch((error) => {
+          toast.error(error.response.data);
+        });
+    }
   }, [BASEURL]);
 
   console.log(userPayment);
   const payment_detail = userPayment.payment;
   const payment = payment_detail.filter((pay) => {
     if (pay.booking.status == "accepted") {
-      if (pay.status != "Paid") {
-        return pay;
-      }
+      return pay;
     }
   });
-
-  const updatePayment = (pay: any) => {};
 
   return (
     <div>
@@ -131,10 +133,10 @@ function AcceptedNotification() {
               }
 
               const small = getRandomNumber(1, 12);
-              const big = getRandomNumber(16, 31);
+              const big = getRandomNumber(17, 31);
               const pid_source = "oZWCHgndhLFFAVUGMbpdIlLTOzaOwvDT";
-              const pid_mid = pay.id + pid_source.slice(small, big);
-              const pid = pid_mid.length < 6 ? pid_mid : pid_mid.slice(0, 5);
+              const pid_fixed = pid_source.slice(small, big);
+              const pid = pid_fixed.slice(0, 3) + pay.id;
               console.log(pid);
               return (
                 <div className="w-full h-fit  flex-col   items-center p-5 rounded-lg bg-gray-200">
@@ -172,7 +174,7 @@ function AcceptedNotification() {
                           </div>
                         </div>
                       </>
-                    ) : (
+                    ) : pay.status != "Paid" ? (
                       <>
                         <div className="font-semibold rounded-md bg-red-300 p-2  text-center">
                           Rs: {pay.amount}
@@ -211,13 +213,19 @@ function AcceptedNotification() {
                               type="hidden"
                               value="http://merchant.com.np/page/esewa_payment_failed?q=fu"
                             />
-                            <button
-                              onClick={() => updatePayment(pay)}
-                              className="bg-teal-600 text-white px-2 py-2 rounded-md hover:bg-teal-500 ml-4"
-                            >
+                            <button className="bg-teal-600 text-white px-2 py-2 rounded-md hover:bg-teal-500 ml-4">
                               Esewa Pay
                             </button>
                           </form>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="font-semibold rounded-md bg-red-300 p-2  text-center">
+                          Rs: {pay.amount}
+                        </div>
+                        <div className="bg-teal-600 text-white px-5 py-2 rounded-md hover:bg-teal-600 ml-4">
+                          Paid
                         </div>
                       </>
                     )}

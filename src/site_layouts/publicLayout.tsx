@@ -11,7 +11,6 @@ import Footer from "@sewa//components/footer";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
-import { SnackbarProvider } from "notistack";
 
 const NotificationContext = createContext<any>(null);
 export function useNotification() {
@@ -26,17 +25,18 @@ function PublicLayout({ children }: { children: ReactElement }) {
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   const getBookings = useCallback(() => {
-    localStorage.setItem("userId", "1");
-    const userId = localStorage.getItem("userId");
-    if (userId)
+    const userId = localStorage.getItem("userInfo");
+    if (userId) {
+      const userInfo = JSON.parse(userId);
       axios
-        .get(`${BASEURL}/user/userBookings/${userId}`)
+        .get(`${BASEURL}/user/userBookings/${userInfo.user_Id}`)
         .then((response) => {
           setBookings(response.data);
         })
         .catch((error) => {
           toast.error(error.response);
         });
+    }
   }, [BASEURL]);
 
   useEffect(() => {
@@ -48,7 +48,6 @@ function PublicLayout({ children }: { children: ReactElement }) {
       <main>
         <Navbar bookings={bookings} />
         {children}
-        <SnackbarProvider />
         <Footer />
       </main>
     </NotificationContext.Provider>

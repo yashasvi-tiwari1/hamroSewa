@@ -1,10 +1,69 @@
 import Image from "next/image";
 import { useState } from "react";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { BASEURL } from "@sewa/pages/api/apiContent";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const navigate = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const setLoginData = (data: {
+    role: string;
+    accessToken: string;
+    refreshToken: string;
+    name: string;
+    user_Id: number;
+    msg: string;
+  }) => {
+    console.log(data);
+    if (data.role == "admin") {
+      localStorage.setItem("adminInfo", JSON.stringify(data));
+      navigate.push({ pathname: "/dashboard", query: { name: data.name } });
+      toast.success(data.msg);
+    } else if (data.role == "vendor") {
+      localStorage.setItem("vendorInfo", JSON.stringify(data));
+      navigate.push({ pathname: "/vendor", query: { name: data.name } });
+      toast.success(data.msg);
+    } else {
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      navigate.push({ pathname: "/", query: { name: data.name } });
+      toast.success(data.msg);
+    }
+  };
+  const login = (e: any) => {
+    e.preventDefault();
+    console.log(formData);
+    axios
+      .post(`${BASEURL}/authorization`, {
+        email: formData.email,
+        password: formData.password,
+      })
+      .then((response) => {
+        const role = response.data.role;
+        console.log(role);
+        setLoginData(response.data);
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.message);
+      });
+  };
+
   return (
     <div className="bg-gray-300 flex justify-center h-screen">
       <div className="flex p-20 w-[900px] justify-center drop-shadow-xl ">
@@ -30,13 +89,17 @@ const Login = () => {
           <p className="text-teal-700 font-semibold mb-5">
             Sign in to Hamro Sewa
           </p>
-          <form action="http://localhost:3000">
+          <form onSubmit={login}>
             <div className="mb-5">
               <input
                 type="text"
                 placeholder="Email Address"
                 className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
                 required={true}
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
               />
             </div>
             <div className="mb-5">
@@ -46,6 +109,10 @@ const Login = () => {
                   placeholder="Password"
                   className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
                   required={true}
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
                 <button
                   type="button"
@@ -87,13 +154,18 @@ const Login = () => {
           </div>
           <div className="-mt-5  py-1 px-2 flex gap-2  text-right  float-right text-gray-700 ">
             <span> Not a member?</span>
-            <Link href="/signup" className="font-semibold ">
-              <u>Sign Up Now</u>
-            </Link>
+
+            <button
+              className="w-fit h-fit flex z-10 underline font-semibold"
+              onClick={() => navigate.push("/signup")}
+            >
+              Sign Up Now
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default Login;

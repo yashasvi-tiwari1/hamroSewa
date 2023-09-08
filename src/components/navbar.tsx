@@ -62,8 +62,8 @@ function Navbar({ bookings }: { bookings: Booking[] }) {
   const closeNotification = () => {
     setIsNotificationOpen(false);
   };
-  const goNotification = () => {
-    navigate.push("/pendingNotification");
+  const goNotification = (status: string) => {
+    navigate.push(`/${status}Notification`);
     setIsNotificationOpen(false);
   };
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -119,16 +119,18 @@ function Navbar({ bookings }: { bookings: Booking[] }) {
                 onClick={() => setIsNotificationOpen((open) => !open)}
               >
                 <IconBell className="w-6 h-6 flex z-20" />
-                <div className="absolute text-red-600 ml-3 -mt-9 rounded-full flex items-center p-1 w-5 h-5 bg-red-100">
-                  <span className="font-semibold">{bookings.length}</span>
-                </div>
+                {bookings.length > 0 && (
+                  <div className="absolute text-red-600 ml-3 -mt-9 rounded-full flex items-center p-1 w-5 h-5 bg-red-100">
+                    <span className="font-semibold">{bookings.length}</span>
+                  </div>
+                )}
               </button>
               {isNotificationOpen && (
                 <NotificationPopup
                   buttonRef={buttonRef}
                   onClose={closeNotification}
                   bookings={bookings}
-                  gotoNotification={goNotification}
+                  gotoNotification={(status) => goNotification(status)}
                 />
               )}
             </div>
@@ -163,7 +165,7 @@ const NotificationPopup = React.forwardRef<
     onClose: () => void;
     bookings: Booking[];
     buttonRef?: RefObject<HTMLButtonElement>;
-    gotoNotification: () => void;
+    gotoNotification: (status: string) => void;
   }
 >(({ gotoNotification, onClose, buttonRef, bookings }, ref) => {
   const divRef = useRef<HTMLDivElement>(null);
@@ -214,7 +216,7 @@ const NotificationPopup = React.forwardRef<
                 return (
                   <button
                     key={index}
-                    onClick={gotoNotification}
+                    onClick={() => gotoNotification(booking.status)}
                     className="text-center"
                   >
                     <div className="flex w-full p-2 gap-4 overflow-hidden rounded-md border-2 items-center ">
@@ -248,6 +250,9 @@ const NotificationPopup = React.forwardRef<
           </div>
         </div>
       </div>
+      <Link href="/login">
+        <div className="mt-2 text-center">Log Out</div>
+      </Link>
     </div>
   );
 });
