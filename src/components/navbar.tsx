@@ -63,7 +63,7 @@ function Navbar({ bookings }: { bookings: Booking[] }) {
     setIsNotificationOpen(false);
   };
   const goNotification = (status: string) => {
-    navigate.push(`/${status}Notification`);
+    navigate.push(`/user${status}`);
     setIsNotificationOpen(false);
   };
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -189,7 +189,7 @@ const NotificationPopup = React.forwardRef<
   const [visibleNotifications, setVisibleNotifications] = useState(4);
   const navigate = useRouter();
   const showMoreNotifications = () => {
-    navigate.push("/pendingNotification");
+    navigate.push("/userBookings");
     onClose();
   };
   return (
@@ -216,7 +216,15 @@ const NotificationPopup = React.forwardRef<
                 return (
                   <button
                     key={index}
-                    onClick={() => gotoNotification(booking.status)}
+                    onClick={() =>
+                      gotoNotification(
+                        booking.status == "pending" ||
+                          (booking.status == "accepted" &&
+                            booking.payment.status == "undefined")
+                          ? "Bookings"
+                          : "Payments"
+                      )
+                    }
                     className="text-center"
                   >
                     <div className="flex w-full p-2 gap-4 overflow-hidden rounded-md border-2 items-center ">

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
@@ -30,7 +30,7 @@ export interface Payment {
   booking: Booking;
 }
 
-function AcceptedNotification() {
+function UserPayments() {
   const navigate = useRouter();
 
   const [userPayment, setUserPayment] = useState<Payment[]>([]);
@@ -54,25 +54,39 @@ function AcceptedNotification() {
   useEffect(() => {
     if (q == "su") {
       openInfo();
-      const payId = oid?.slice(3, oid?.length);
-      const payData = {
-        amount: amt,
-        status: "Paid",
-      };
-      axios
-        .put(`${BASEURL}/payment/${payId}`, payData)
-        .then((response) => {
-          getBookings();
+      if (typeof oid != "object" && oid != undefined) {
+        const payId = oid?.split(".");
+        const payData = {
+          amount: amt,
+          status: "Paid",
+        };
+        axios
+          .put(`${BASEURL}/payment/${payId[1]}`, payData)
+          .then((response) => {
+            getBookings();
+            fetchUserPayments();
+            openInfo();
+          })
+          .catch((err) => {
+            toast.error(err.response.data);
+          });
 
-          openInfo();
-        })
-        .catch((err) => {
-          toast.error(err.response.data);
-        });
+        axios
+          .patch(`${BASEURL}/balance${payId[2]}`, {
+            balance: amt?.slice(0, amt?.length - 2),
+          })
+          .then((response) => {
+            console.log("vendor lai gayo paisa");
+            openInfo();
+          })
+          .catch((err) => {
+            toast.error(err.response.data);
+          });
+      }
     }
   }, [q]);
 
-  useEffect(() => {
+  const fetchUserPayments = useCallback(() => {
     const userId = localStorage.getItem("userInfo");
     if (userId) {
       const userInfo = JSON.parse(userId);
@@ -86,6 +100,10 @@ function AcceptedNotification() {
         });
     }
   }, [BASEURL]);
+
+  useEffect(() => {
+    fetchUserPayments();
+  }, [fetchUserPayments]);
   console.log(userPayment);
 
   return (
@@ -95,14 +113,11 @@ function AcceptedNotification() {
           <div className="w-full h-fit border-2 flex overflow-hidden rounded-lg">
             <button
               className="w-1/2 h-fit text-center p-2 font-semibold "
-              onClick={() => navigate.push("/pendingNotification")}
+              onClick={() => navigate.push("/userBookings")}
             >
               Bookings
             </button>
-            <button
-              className="w-1/2 h-fit text-center p-2 bg-teal-500 font-semibold text-white "
-              onClick={() => navigate.push("/acceptedNotification")}
-            >
+            <button className="w-1/2 h-fit text-center p-2 bg-teal-500 font-semibold text-white ">
               Payments
             </button>
           </div>
@@ -121,7 +136,12 @@ function AcceptedNotification() {
               const big = getRandomNumber(17, 31);
               const pid_source = "oZWCHgndhLFFAVUGMbpdIlLTOzaOwvDT";
               const pid_fixed = pid_source.slice(small, big);
-              const pid = pid_fixed.slice(0, 3) + pay.id;
+              const pid =
+                pid_fixed.slice(0, 3) +
+                "." +
+                pay.id +
+                "." +
+                pay.booking.vendor[0].id;
               console.log(pid);
               return (
                 <div className="w-full h-fit  flex-col   items-center p-5 rounded-lg bg-gray-200">
@@ -180,7 +200,7 @@ function AcceptedNotification() {
                             <input
                               name="su"
                               type="hidden"
-                              value="http://localhost:3000/acceptedNotification?q=su"
+                              value="http://localhost:3000/userPayments?q=su"
                             />
                             <input
                               name="fu"
@@ -215,7 +235,7 @@ function AcceptedNotification() {
   );
 }
 
-AcceptedNotification.getLayout = function getLayout(page: ReactElement) {
+UserPayments.getLayout = function getLayout(page: ReactElement) {
   return <PublicLayout>{page}</PublicLayout>;
 };
-export default AcceptedNotification;
+export default UserPayments;

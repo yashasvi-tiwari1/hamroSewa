@@ -155,11 +155,7 @@ function Customer({ currentLocation }: any) {
       })
       .then((response) => {
         toast.success(response?.data?.msg);
-        console.log(response?.data?.msg);
-        localStorage.setItem("userId", response.data.user_id);
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.refreshToken);
-        console.log(response.data);
+        localStorage.setItem("userInfo", JSON.stringify(response?.data));
         navigate.push({ pathname: "/", query: { name: response.data.name } });
       })
       .catch((err) => {

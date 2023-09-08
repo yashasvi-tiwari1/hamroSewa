@@ -47,7 +47,7 @@ function Card() {
   return (
     <div className=" container md:px-16 md:py-16 p-8 md:p-12 full-width">
       <div className=" md:text-4xl p-1 text-2xl text-center  font-semibold ">
-        <p> Our Products </p>
+        <p> Top Services </p>
       </div>
       <Swiper
         navigation={true}

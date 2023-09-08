@@ -3,8 +3,10 @@ import PublicLayout from "@sewa/site_layouts/publicLayout";
 import { IconSearch } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 function Landing({ icons }: any) {
+  const navigate = useRouter();
   interface IconsProps {
     name: string;
     icon: any;
@@ -123,7 +125,15 @@ function Landing({ icons }: any) {
           <div className="flex justify-center gap-14 ">
             {items.map((item: any) => {
               return (
-                <div className="flex flex-col items-center">
+                <div
+                  className="flex flex-col items-center"
+                  onClick={() =>
+                    navigate.push({
+                      pathname: "/googlemaps_vendor",
+                      query: { service: item.name },
+                    })
+                  }
+                >
                   {item.icon}
                   <span className="mt-2">{item.name}</span>
                 </div>

@@ -5,6 +5,8 @@ import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
 
+// const { getBookings } = useNotification();
+
 interface Vendor {
   id: number;
   service_type: string;
@@ -21,8 +23,9 @@ interface Booking {
   vendor: [Vendor];
 }
 
-function PendingNotification() {
+function UserBookings() {
   const navigate = useRouter();
+
   const [userBookings, setUserBookings] = useState<[Booking]>([
     {
       id: 0,
@@ -66,6 +69,7 @@ function PendingNotification() {
       .then((response) => {
         toast.success(response?.data?.msg);
         fetchBookings();
+        // getBookings();
       })
       .catch((err) => {
         toast.error(err?.response?.data?.message);
@@ -82,7 +86,7 @@ function PendingNotification() {
             </div>
             <button
               className="w-1/2 h-fit text-center p-2 font-semibold "
-              onClick={() => navigate.push("/acceptedNotification")}
+              onClick={() => navigate.push("/userPayments")}
             >
               Payment
             </button>
@@ -155,7 +159,7 @@ function PendingNotification() {
   );
 }
 
-PendingNotification.getLayout = function getLayout(page: ReactElement) {
+UserBookings.getLayout = function getLayout(page: ReactElement) {
   return <PublicLayout>{page}</PublicLayout>;
 };
-export default PendingNotification;
+export default UserBookings;
