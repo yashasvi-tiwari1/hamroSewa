@@ -30,18 +30,10 @@ export interface Payment {
   booking: Booking;
 }
 
-export interface User {
-  id: number;
-  payment: Payment[];
-}
-
 function AcceptedNotification() {
   const navigate = useRouter();
 
-  const [userPayment, setUserPayment] = useState<User>({
-    id: 0,
-    payment: [],
-  });
+  const [userPayment, setUserPayment] = useState<Payment[]>([]);
   const { getBookings } = useNotification();
 
   const [success, setSuccess] = useState("");
@@ -94,14 +86,7 @@ function AcceptedNotification() {
         });
     }
   }, [BASEURL]);
-
   console.log(userPayment);
-  const payment_detail = userPayment.payment;
-  const payment = payment_detail.filter((pay) => {
-    if (pay.booking.status == "accepted") {
-      return pay;
-    }
-  });
 
   return (
     <div>
@@ -112,17 +97,17 @@ function AcceptedNotification() {
               className="w-1/2 h-fit text-center p-2 font-semibold "
               onClick={() => navigate.push("/pendingNotification")}
             >
-              Notification Pending
+              Bookings
             </button>
             <button
               className="w-1/2 h-fit text-center p-2 bg-teal-500 font-semibold text-white "
               onClick={() => navigate.push("/acceptedNotification")}
             >
-              Notification Accepted
+              Payments
             </button>
           </div>
           <div className="w-full grid  border-2 grid-cols-3 border-b-0 flex gap-5 h-fit p-10 rounded-md ">
-            {payment.map((pay, index) => {
+            {userPayment.map((pay, index) => {
               const date = pay.booking.booked_date.toString();
               const showDate = date.slice(0, 10);
 
@@ -163,18 +148,7 @@ function AcceptedNotification() {
                   </div>
 
                   <div className=" flex mt-6 w-full px-12">
-                    {pay.status === "undefined" ? (
-                      <>
-                        <div className="flex justify-between w-full">
-                          <div className="font-semibold rounded-md bg-teal-700 p-2 text-center text-white">
-                            {pay.booking.status}
-                          </div>
-                          <div className="font-semibold rounded-md bg-red-700 text-white   p-2">
-                            {pay.status}
-                          </div>
-                        </div>
-                      </>
-                    ) : pay.status != "Paid" ? (
+                    {pay.status != "Paid" ? (
                       <>
                         <div className="font-semibold rounded-md bg-red-300 p-2  text-center">
                           Rs: {pay.amount}

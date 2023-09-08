@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import Navbar from "@sewa/components/vendor_navbar";
 import Sidebar from "@sewa/components/vendor_sidebar";
+import "react-toastify/dist/ReactToastify.css";
 
 interface LayoutProps {
   children: ReactNode;

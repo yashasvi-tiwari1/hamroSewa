@@ -10,22 +10,27 @@ import { toast } from "react-toastify";
 function Booked() {
   const navigate = useRouter();
   const { id } = navigate.query;
-  const userid: any = localStorage.getItem("userId");
-  const user_id: any = parseInt(userid, 10);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [vendor, setVendor] = useState<any>({});
+  const [user_id, setUser_id] = useState(0);
 
   useEffect(() => {
-    axios
-      .get(`${BASEURL}/vendor/detail`, {
-        params: { userId: user_id, vendorId: id },
-      })
-      .then((response) => {
-        setVendor(response.data);
-      })
-      .catch((error) => {
-        toast.error(error.response.message[0]);
-      });
+    const userData = localStorage.getItem("userInfo");
+    if (userData) {
+      const userInfo = JSON.parse(userData);
+      console.log(userInfo);
+      setUser_id(userInfo.user_Id);
+      axios
+        .get(`${BASEURL}/vendor/detail`, {
+          params: { userId: userInfo.user_Id, vendorId: id },
+        })
+        .then((response) => {
+          setVendor(response.data);
+        })
+        .catch((error) => {
+          toast.error(error.response?.data?.message);
+        });
+    }
   }, [BASEURL]);
   const openDialog = () => {
     setDialogOpen(true);

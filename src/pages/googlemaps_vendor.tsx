@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 function VendorMaps() {
   const navigate = useRouter();
   const [selectedMarker, setSelectedMarker] = useState<any>(null);
-
+  const { service } = navigate.query;
   const handleMarkerClick = (marker: any) => {
     setSelectedMarker(marker);
   };
@@ -25,7 +25,6 @@ function VendorMaps() {
     setSelectedMarker(null);
   };
 
-  const category = "plumbing";
   const marker = [];
   const libraries = useMemo(() => ["places"], []);
   const mapCenter = useMemo(() => ({ lat: 28.13091763, lng: 84.0966657 }), []);
@@ -34,14 +33,16 @@ function VendorMaps() {
 
   useEffect(() => {
     axios
-      .get(`${BASEURL}/vendor`)
-      .then(function (response) {
-        setVendors(response.data.data);
+      .get(`${BASEURL}/vendor/specific`, { params: { service_type: service } })
+      .then((response) => {
+        console.log(response.data);
+        setVendors(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
   }, [BASEURL]);
+
   console.log(vendors);
 
   const mapOptions = useMemo<google.maps.MapOptions>(
@@ -57,7 +58,6 @@ function VendorMaps() {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     libraries: libraries as any,
   });
-  console.log(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string);
 
   if (!isLoaded) {
     return <p>Loading...</p>;

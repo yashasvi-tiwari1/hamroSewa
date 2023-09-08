@@ -117,7 +117,7 @@ const ServiceCard = ({ service }: any) => {
           onClick={() => {
             navigate.push({
               pathname: "/googlemaps_vendor",
-              query: { name: service.name },
+              query: { service: service.name },
             });
           }}
           className="bg-custom-tale w-max mt-4 px-4 py-2 text-sm rounded-lg text-white"

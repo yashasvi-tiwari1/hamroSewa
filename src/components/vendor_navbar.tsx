@@ -1,10 +1,15 @@
 import { IconChevronDown } from "@tabler/icons-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const router = useRouter();
-  const vendor = localStorage.getItem("vendorInfo");
+  const [vendor, setVendor] = useState("");
+  useEffect(() => {
+    const vend = localStorage.getItem("vendorInfo");
+    if (vend) setVendor(vend);
+  }, []);
   if (vendor) {
     const vendorData = JSON.parse(vendor);
 

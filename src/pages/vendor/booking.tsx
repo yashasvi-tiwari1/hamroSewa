@@ -68,7 +68,6 @@ const Booking: NextPageWithLayout = () => {
     } else {
       fetchBookings();
     }
-    // console.log(employee);
   };
   const acceptBooking = (bookingId: number) => {
     axios

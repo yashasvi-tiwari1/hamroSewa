@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
-import { enqueueSnackbar } from "notistack";
 
 export interface User {
   id: number;
@@ -77,15 +76,12 @@ const Payment: NextPageWithLayout = () => {
     axios
       .put(`${BASEURL}/payment/${payId}`, updateData)
       .then((response) => {
-        enqueueSnackbar(response?.data?.msg, {
-          variant: "success",
-        });
+        toast.success(response?.data?.msg);
         fetchPayment();
       })
       .catch((err) => {
-        enqueueSnackbar(err.response?.data?.message, {
-          variant: "error",
-        });
+        console.log("sab thik xa");
+        toast.error(err?.response?.data?.message);
       });
   };
   const router = useRouter();
@@ -162,12 +158,16 @@ function ShowPayments({ payment, val, updateAmount }: any) {
       <td className="border px-4 py-2">{payment.booking.user[0].name}</td>
 
       <td className="border px-4 py-2">
-        <input type="text" value={amount} onChange={handleChange} />
+        {payment.status != "Paid" ? (
+          <input type="text" value={amount} onChange={handleChange} />
+        ) : (
+          amount
+        )}
       </td>
       <td className="border px-4 py-2">{payment.booking.description}</td>
       <td
-        className={`border px-4 py-2 ${
-          payment.status === "defined" || payment.status === "paid"
+        className={`border px-4 py-2 text-center ${
+          payment.status === "defined" || payment.status === "Paid"
             ? " bg-green-100 text-green-600"
             : " bg-red-100 text-red-600"
         }`}
@@ -185,10 +185,7 @@ function ShowPayments({ payment, val, updateAmount }: any) {
         </td>
       ) : (
         <td className="border px-4 py-2">
-          <button
-            onClick={() => updateAmount(payment.id)}
-            className="py-2 px-4 rounded-md text-white bg-gray-400 mx-auto cursor-pointer"
-          >
+          <button className="py-2 px-4 rounded-md text-white bg-gray-400 mx-auto ">
             Update
           </button>
         </td>

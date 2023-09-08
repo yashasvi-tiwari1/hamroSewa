@@ -29,7 +29,7 @@ function PublicLayout({ children }: { children: ReactElement }) {
     if (userId) {
       const userInfo = JSON.parse(userId);
       axios
-        .get(`${BASEURL}/user/userBookings/${userInfo.user_Id}`)
+        .get(`${BASEURL}/user/notification/${userInfo.user_Id}`)
         .then((response) => {
           setBookings(response.data);
         })

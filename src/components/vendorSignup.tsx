@@ -245,16 +245,16 @@ function VendorSignup({ currentLocation }: any) {
               <option value="" disabled selected>
                 Select an Service Type
               </option>
-              <option value="plumber">Plumber</option>
-              <option value="painter">Painter</option>
-              <option value="electrician">Electrician</option>
-              <option value="cleaner">Cleaner</option>
-              <option value="carepenter">Carpenter</option>
+              <option value="Plumber">Plumber</option>
+              <option value="Painter">Painter</option>
+              <option value="Electrician">Electrician</option>
+              <option value="Cleaner">Cleaner</option>
+              <option value="Carepenter">Carpenter</option>
               <option value="Gardener">Gardener</option>
-              <option value="decorator">Decorator</option>
-              <option value="builder">Builder</option>
-              <option value="welder">Welder</option>
-              <option value="helper">Helper</option>
+              <option value="Decorator">Decorator</option>
+              <option value="Builder">Builder</option>
+              <option value="Welder">Welder</option>
+              <option value="Helper">Helper</option>
             </select>
             {errors.service_type && <span>{errors.service_type.message}</span>}
           </div>
