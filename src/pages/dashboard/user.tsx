@@ -21,6 +21,7 @@ interface user {
   locationID: number;
   location: Location;
 }
+
 interface Location {
   id: number;
   createdAt: string;
@@ -28,6 +29,7 @@ interface Location {
   longitude: number;
   latitude: number;
 }
+
 const User: NextPageWithLayout = () => {
   const [users, setUsers] = useState<user[]>([]);
 
@@ -68,27 +70,14 @@ const User: NextPageWithLayout = () => {
         <div className="flex justify-between  items-center px-4  ">
           <div className="flex items-center gap-6">
             <span>Total Users: 350 </span>
-            <div className="flex items-center space-x-4 mb-2 sm:mb-0">
-              <label className="font-semibold">Filter by:</label>
-              <select className="border rounded py-2 px-1 bg-teal-500 text-white hover:bg-teal-700">
-                <option value="option1">Alphabet</option>
-                <option value="option2"></option>
-                <option value="option3">Option 3</option>
-              </select>
-            </div>
           </div>
           <div className="relative user-search">
             <input
               type="search"
-              placeholder="Search user ..."
+              placeholder="Search User ..."
               className="p-2 border rounded-lg px-12 "
             />
             <IconSearch className="absolute -mt-8  ml-3 text-gray-500" />
-          </div>
-          <div>
-            <button className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-4 rounded font-semibold tracking-wider">
-              Export Users Excel
-            </button>
           </div>
         </div>
         <div className="px-4 flex justify-center mx-auto container mt-10">

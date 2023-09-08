@@ -55,19 +55,11 @@ const Payment: NextPageWithLayout = () => {
         <div className="flex justify-between  items-center px-4  ">
           <div className="flex items-center gap-6">
             <span>Total Amount: 100 </span>
-            <div className="flex items-center space-x-4 mb-2 sm:mb-0">
-              <button
-                className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-4 rounded font-semibold tracking-wider"
-                onClick={() => router.push("/addService")}
-              >
-                Add Services
-              </button>
-            </div>
           </div>
           <div className="relative user-search">
             <input
               type="search"
-              placeholder="Search services ..."
+              placeholder="Search Payment ..."
               className="p-2 border rounded-lg px-12 "
             />
             <IconSearch className="absolute -mt-8  ml-3 text-gray-500" />
@@ -82,7 +74,7 @@ const Payment: NextPageWithLayout = () => {
                 <th className="border px-4 py-2">Vendor Name</th>
                 <th className="border px-4 py-2">Amount</th>
                 <th className="border px-4 py-2">Description</th>
-                <th className="border px-4 py-2"> Status </th>
+                <th className="border px-4 py-2"> Status</th>
                 <th className="border px-4 py-2">Edit</th>
                 <th className="border px-4 py-2">Delete</th>
               </tr>

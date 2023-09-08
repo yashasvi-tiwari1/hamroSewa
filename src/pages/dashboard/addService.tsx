@@ -58,7 +58,7 @@ const AddService: React.FC<DialogProps> = ({ isOpen, onClose }) => {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle  sm:w-max sm:max-h-2xl sm:h-full pr-14 ">
+            <div className="inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all sm:my-8 sm:align-middle  sm:w-max sm:max-h-2xl sm:h-full pr-7 ">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                   <div className="mx-auto flex-shrink-0 flex items-center -mt-1 justify-center h-12 w-12 rounded-full bg-teal-200 sm:mx-0 sm:h-10 sm:w-10">
@@ -110,7 +110,7 @@ const AddService: React.FC<DialogProps> = ({ isOpen, onClose }) => {
                           id="image"
                           name="image"
                           accept="image/*"
-                          className="w-full rounded-lg"
+                          className="w-full rounded-lg outline-none"
                           onChange={handleImageChange}
                         />
                       </div>
@@ -124,18 +124,17 @@ const AddService: React.FC<DialogProps> = ({ isOpen, onClose }) => {
                         </div>
                       )}
                     </div>
-                    <div className=" sm:flex sm:flex-row-reverse gap-4 mt-10 -mr-10">
+                    <div className=" sm:flex sm:flex-row-reverse gap-4 mt-10 ">
                       <button
                         type="button"
-                        className="inline-flex w-full justify-center rounded-md bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 sm:ml-3 sm:w-auto"
-                        // onClick={bookVendor}
+                        className="inline-flex w-full justify-center rounded-md bg-teal-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 sm:ml-3 sm:w-auto"
                       >
                         Add
                       </button>
                       <button
                         type="button"
-                        className="mt-3 inline-flex w-full justify-center rounded-md bg-red-500 px-4 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-700 sm:mt-0 sm:w-auto"
-                        onClick={onClose} // Use the onClose prop to close the dialog
+                        className="mt-3  inline-flex w-full justify-center rounded-md bg-red-500 px-6 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-700 sm:mt-0 sm:w-auto"
+                        onClick={onClose}
                         ref={cancelButtonRef}
                       >
                         Cancel

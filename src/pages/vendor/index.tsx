@@ -20,7 +20,7 @@ const Vendor_Dashboard: NextPageWithLayout = () => {
               </div>
               <div className="font-semibold text-lg">3</div>
               <div className="font-semibold text-lg text-gray-600">
-                Total Earning
+                Total Amount
               </div>
             </div>
             <div className="bg-purple-200 p-6 rounded-lg text-center w-52 ">

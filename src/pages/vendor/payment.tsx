@@ -34,6 +34,7 @@ export interface Vendor {
   id: number;
   payment: Payment[];
 }
+
 const Payment: NextPageWithLayout = () => {
   const [vendorPayment, setVendorPayment] = useState<Vendor>({
     id: 0,
@@ -95,14 +96,6 @@ const Payment: NextPageWithLayout = () => {
         <div className="flex justify-between  items-center px-4  ">
           <div className="flex items-center gap-6">
             <span>Total Amount: 100 </span>
-            <div className="flex items-center space-x-4 mb-2 sm:mb-0">
-              <button
-                className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-4 rounded font-semibold tracking-wider"
-                onClick={() => router.push("/addService")}
-              >
-                Add Services
-              </button>
-            </div>
           </div>
           <div className="relative user-search">
             <input
@@ -120,9 +113,9 @@ const Payment: NextPageWithLayout = () => {
                 <th className="px-4 py-2">ID</th>
                 <th className="border px-4 py-2">User Name</th>
                 <th className="border px-4 py-2">Amount</th>
-                <th className="border px-4 py-2"> Description </th>
+                <th className="border px-4 py-2"> Description</th>
 
-                <th className="border px-4 py-2"> Status </th>
+                <th className="border px-4 py-2"> Status</th>
                 <th className="border px-4 py-2">Update</th>
               </tr>
             </thead>
@@ -149,9 +142,11 @@ Payment.getLayout = function getLayout(page: ReactElement) {
 
 function ShowPayments({ payment, val, updateAmount }: any) {
   const [amount, setAmount] = useState(val);
+
   function handleChange(e: any) {
     setAmount(e.target.value);
   }
+
   return (
     <tr key={payment.id}>
       <td className="border px-4 py-2"> {payment.id} </td>
@@ -193,4 +188,5 @@ function ShowPayments({ payment, val, updateAmount }: any) {
     </tr>
   );
 }
+
 export default Payment;

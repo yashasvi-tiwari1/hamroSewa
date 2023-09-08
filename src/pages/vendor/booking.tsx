@@ -15,6 +15,7 @@ interface User {
   contact: string;
   street: string;
 }
+
 interface Booking {
   id: number;
   createdAt: string;
@@ -24,6 +25,7 @@ interface Booking {
   description: string;
   user: [User];
 }
+
 const Booking: NextPageWithLayout = () => {
   const router = useRouter();
 
@@ -109,14 +111,6 @@ const Booking: NextPageWithLayout = () => {
         <div className="flex justify-between  items-center px-4  ">
           <div className="flex items-center gap-6">
             <span>Total Booking: 100 </span>
-            <div className="flex items-center space-x-4 mb-2 sm:mb-0">
-              <button
-                className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-4 rounded font-semibold tracking-wider"
-                onClick={() => router.push("/addService")}
-              >
-                Add Services
-              </button>
-            </div>
           </div>
           <div className="relative user-search">
             <input
@@ -136,8 +130,8 @@ const Booking: NextPageWithLayout = () => {
                 <th className="border px-4 py-2">User Name</th>
                 <th className="border px-4 py-2">Description</th>
                 <th className="border px-4 py-2">Address</th>
-                <th className="border px-4 py-2"> Status </th>
-                <th className="border px-4 py-2"> Date </th>
+                <th className="border px-4 py-2"> Status</th>
+                <th className="border px-4 py-2"> Date</th>
                 <th className="border px-4 py-2">Accept</th>
                 <th className="border px-4 py-2">Cancel</th>
               </tr>

@@ -86,7 +86,7 @@ export default function Sidebar() {
           <div className="dashboarcd_item">
             <Link href="/login" className="dashboard_text flex gap-6">
               <IconLogout className=" w-6 h-6" />
-              Sign Out
+              Log Out
             </Link>
           </div>
         </div>
