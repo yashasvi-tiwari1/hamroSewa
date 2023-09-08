@@ -1,17 +1,18 @@
 import React from "react";
 import Image from "next/image";
-import {
-  IconBrandFacebook,
-  IconBrandGithub,
-  IconBrandLinkedin,
-  IconMail,
-  IconPhoneOutgoing,
-} from "@tabler/icons-react";
-import Link from "next/link";
 
 {
   /* eslint-disable @next/next/no-html-link-for-pages */
 }
+
+import {
+  IconBrandFacebook,
+  IconBrandLinkedin,
+  IconPhoneOutgoing,
+  IconBrandGithub,
+  IconMail,
+} from "@tabler/icons-react";
+import Link from "next/link";
 
 function Footer() {
   return (
@@ -76,10 +77,10 @@ function Footer() {
           <div>
             <span className="font-semibold">Follow Us </span>
             <div className="flex  flex-wrap  mt-2 gap-3">
-              <a href="https://www.facebook.com">
+              <a href="https://www.facebook.com/yarsatechnologies">
                 <IconBrandFacebook className="w-6 h-6" />
               </a>
-              <a href="https://www.linkedin.com">
+              <a href="https://www.linkedin.com/company/yarsatech">
                 <IconBrandLinkedin className="w-6 h-6" />
               </a>
               <IconBrandGithub className="w-6 h-6" />
@@ -88,9 +89,10 @@ function Footer() {
         </div>
       </div>
       <div className="text-center p-4 border-t">
-        © 2021 - 2023 HamroSewa. All rights reserved.
+        © 2023 HamroSewa . All rights reserved.
       </div>
     </footer>
   );
 }
+
 export default Footer;

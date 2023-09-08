@@ -6,16 +6,25 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { BASEURL } from "@sewa/pages/api/apiContent";
 import { toast } from "react-toastify";
+import CustomDialog from "@sewa/pages/dialog-page";
+import AddService from "@sewa/pages/dashboard/addService";
 
 interface Services {
   id: number;
   name: string;
   description: string;
 }
+
 const Service: NextPageWithLayout = () => {
   const router = useRouter();
   const [services, setServices] = useState<Services[]>([]);
-
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const openDialog = () => {
+    setDialogOpen(true);
+  };
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
   const fetchServices = useCallback(() => {
     axios
       .get(`${BASEURL}/services`)
@@ -54,10 +63,11 @@ const Service: NextPageWithLayout = () => {
             <div className="flex items-center space-x-4 mb-2 sm:mb-0">
               <button
                 className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-4 rounded font-semibold tracking-wider"
-                onClick={() => router.push("/addService")}
+                onClick={openDialog}
               >
                 Add Services
               </button>
+              <AddService isOpen={isDialogOpen} onClose={closeDialog} />
             </div>
           </div>
           <div className="relative user-search">
