@@ -25,21 +25,21 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         autoHideDuration={4000}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
       >
-        <ThemeProvider enableSystem={true} attribute={"class"}>
-          {getLayout(<Component {...pageProps} />)}
-          <ToastContainer
-            position="bottom-center"
-            autoClose={4000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-        </ThemeProvider>
+        {/*<ThemeProvider enableSystem={true} attribute={"class"}>*/}
+        {getLayout(<Component {...pageProps} />)}
+        <ToastContainer
+          position="bottom-center"
+          autoClose={4000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        {/*</ThemeProvider>*/}
       </SnackbarProvider>
     </>
   );

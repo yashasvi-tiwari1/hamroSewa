@@ -24,7 +24,7 @@ export default function Sidebar() {
         </div>
         <div>
           <div className="flex items-center gap-6 mb-8 cursor-pointer">
-            <Link href="/dashboard" className="dashboard_text gap-6 flex">
+            <Link href="/vendor" className="dashboard_text gap-6 flex">
               <IconLayoutDashboard className=" w-6 h-6" />
               Dashboard
             </Link>
@@ -50,7 +50,7 @@ export default function Sidebar() {
           <div className="dashboarcd_item">
             <Link href="/login" className="dashboard_text flex gap-6">
               <IconLogout className=" w-6 h-6" />
-              Sign Out
+              Log Out
             </Link>
           </div>
         </div>

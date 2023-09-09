@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
 }
 
 /*@media (prefers-color-scheme: dark) {*/
@@ -15,8 +15,8 @@
 /*    --background-end-rgb: 0, 0, 0;*/
 /*  }*/
 /*}*/
-.container{
-  @apply max-w-screen-xl mx-auto;
+.container {
+    @apply max-w-screen-xl mx-auto;
 }
 
 /*body {*/
@@ -29,47 +29,61 @@
 /*    rgb(var(--background-start-rgb));*/
 /*}*/
 body {
-  @apply bg-white text-black;
+    @apply bg-white text-black;
 }
+
 .horizontal-line {
-  border-top: 1px solid ;
-}
-.date-time{
-  display: flex;
-  margin-left: 80px;
-}
-.ld{
-  /*border: 1px solid red;*/
-  text-align: center;
+    border-top: 1px solid;
 }
 
-.DatePicker{
-  background: #76963d;
-}
-.label{
-  @apply block text-sm font-medium
-}
-.input_field{
-  @apply mt-1 p-2 w-full border bg-white  rounded-md focus:ring focus:ring-teal focus:outline-none focus:ring-opacity-50;
+.date-time {
+    display: flex;
+    margin-left: 80px;
 }
 
-dashboard_text{
-  @apply text-gray-700
+.ld {
+    /*border: 1px solid red;*/
+    text-align: center;
 }
-.dashboard_item{
-  @apply flex items-center gap-6 mb-4 cursor-pointer
+
+.DatePicker {
+    background: #76963d;
 }
-.nav::placeholder{
-  line-height: 100%;
-  transform: translateY(-9%);
+
+.label {
+    @apply block text-sm font-medium
 }
-.user span{
-  @apply text-red-600;
+
+.input_field {
+    @apply mt-1 p-2 w-full border bg-white  rounded-md focus:ring focus:ring-teal focus:outline-none focus:ring-opacity-50;
 }
-.user-search input::placeholder{
-  line-height: 100%;
-  transform: translateY(-6%);
+
+dashboard_text {
+    @apply text-gray-700
 }
+
+.dashboard_item {
+    @apply flex items-center gap-6 mb-4 cursor-pointer
+}
+
+.nav::placeholder {
+    line-height: 100%;
+    transform: translateY(-9%);
+}
+
+.user span {
+    @apply text-red-600;
+}
+
+.user-search input::placeholder {
+    line-height: 100%;
+    transform: translateY(-6%);
+}
+
 .user .already {
-  @apply text-black;
+    @apply text-black;
+}
+
+.hide-navbar {
+    display: none;
 }

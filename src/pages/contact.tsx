@@ -34,6 +34,7 @@ function Contact() {
   const handleMessage = (e: any) => {
     setMessage(e.target.value);
   };
+
   async function AddContact() {
     console.log(email, phone, fname, lname, message);
     if (email && phone && fname && lname && message) {
@@ -169,7 +170,7 @@ function Contact() {
               </label>
               <button
                 onClick={AddContact}
-                className="rounded-md  text-white text-base bg-custom-blue py-3 px-5 tracking-wider  md:mt-10 mt-4"
+                className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-4 rounded font-semibold mt-4"
               >
                 Contact us
               </button>
@@ -180,6 +181,7 @@ function Contact() {
     </Layout>
   );
 }
+
 Contact.getLayout = function getLayout(page: ReactElement) {
   return <PublicLayout>{page}</PublicLayout>;
 };
