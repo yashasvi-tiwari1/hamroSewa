@@ -1,4 +1,5 @@
 import Image from "next/image";
+import homeServiceBg from "../../public/assets/login.png";
 import { useState } from "react";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { useRouter } from "next/router";
@@ -21,6 +22,9 @@ const Login = () => {
       ...formData,
       [name]: value,
     });
+  };
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
   };
 
   const setLoginData = (data: {
@@ -65,104 +69,85 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-gray-300 flex justify-center h-screen">
-      <div className="flex p-20 w-[900px] justify-center drop-shadow-xl ">
-        <div className="w-2/5 rounded-l-xl bg-white overflow-hidden h-fit">
+    <div className="bg-gray-200 min-h-screen flex justify-center items-center">
+      <div className="flex w-full max-w-xl bg-white p-8 rounded-lg shadow-lg">
+        <div className="w-1/2 ">
           <Image
             src="/assets/logo.png"
             alt="logo"
-            height={300}
-            width={300}
-            className="w-40 h-30"
+            width={200}
+            height={200}
+            className="mx-auto mb-8"
           />
-          <Image
-            src="/assets/login.jpg"
-            alt="services image"
-            height={400}
-            width={300}
-            className="w-fit h-fit  rounded-t-lg drop-shadow-lg"
-          />
-        </div>
-
-        <div className="w-3/5 bg-white p-5 rounded-r-xl h-fit">
-          <p className="font-bold text-2xl text-center mb-10">Welcome</p>
-          <p className="text-teal-700 font-semibold mb-5">
+          <h2 className="text-3xl font-bold text-center mt-14">Welcome</h2>
+          <p className="text-teal-600 font-semibold text-center mb-6">
             Sign in to Hamro Sewa
           </p>
-          <form onSubmit={login}>
-            <div className="mb-5">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
               <input
                 type="text"
                 placeholder="Email Address"
-                className="border p-3 focus:ring focus:outline-none focus:ring-teal-200 focus:opacity-50 rounded w-full"
-                required={true}
-                id="email"
+                className="border rounded-md w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-teal-200"
+                required
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
               />
             </div>
-            <div className="mb-5">
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  className="border p-3 focus:ring focus:ring-teal-200 focus:outline-none focus:opacity-50 rounded w-full"
-                  required={true}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none"
-                >
-                  {showPassword ? (
-                    <IconEye className="h-5 w-5 text-gray-500" />
-                  ) : (
-                    <IconEyeOff className="h-5 w-5 text-gray-500" />
-                  )}
-                </button>
-              </div>
+            <div className="mb-4 relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className="border rounded-md w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-teal-200"
+                required
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-500 hover:text-teal-500 focus:outline-none"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
             </div>
-            <div className="flex justify-between mb-7 gap-10">
-              <div>
-                <input type="checkbox" />
-                <span className="ml-2">Remember Me</span>
-              </div>
-              <div>
-                <span className="text-teal-500">
-                  <u>Forgot Password ?</u>
-                </span>
-              </div>
+            <div className="flex justify-between items-center mb-4 ">
+              <label className="flex items-center">
+                <input type="checkbox" className="mr-2" />
+                Remember Me
+              </label>
+              <span
+                className="text-teal-600 cursor-pointer"
+                onClick={() => navigate.push("/forgot-password")}
+              >
+                Forgot Password?
+              </span>
             </div>
             <div>
               <button
                 type="submit"
-                className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-6 rounded"
+                className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-4 rounded-md w-full"
               >
                 Sign In
               </button>
             </div>
+            <div className="text-right text-black pt-6 text-base flex  justify-between">
+              <h2 className="text-base font-semibold">Not a member?</h2>
+              <p
+                className="text-base underline cursor-pointer"
+                onClick={() => navigate.push("/signup")}
+              >
+                Sign Up Now
+              </p>
+            </div>
           </form>
-          <div className="inline-flex items-center justify-center w-full gap-3 ">
-            <hr className=" w-1/2 h-0.5 my-8 bg-gray-500 border-0 rounded " />
-            <span className="font-semibold "> or </span>
-            <hr className=" w-1/2 h-0.5 my-8 bg-gray-500 border-0 rounded " />
-          </div>
-          <div className="-mt-5  py-1 px-2 flex gap-2  text-right  float-right text-gray-700 ">
-            <span> Not a member?</span>
-
-            <button
-              className="w-fit h-fit flex z-10 underline font-semibold"
-              onClick={() => navigate.push("/signup")}
-            >
-              Sign Up Now
-            </button>
-          </div>
         </div>
+        <div
+          className="w-1/2 bg-cover bg-center rounded-r-lg"
+          style={{ backgroundImage: `url(${homeServiceBg.src})` }}
+        ></div>
       </div>
     </div>
   );
