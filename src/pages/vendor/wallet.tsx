@@ -1,18 +1,38 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconCircleChevronRight } from "@tabler/icons-react";
 import Image from "next/image";
+import axios from "axios";
+import { BASEURL } from "@sewa/pages/api/apiContent";
+import { toast } from "react-toastify";
 
 interface DialogProps {
   isOpen: boolean;
   onClose: () => void;
+  vendorId: number;
 }
 
-const LoadMoney: React.FC<DialogProps> = ({ isOpen, onClose }) => {
+const LoadMoney: React.FC<DialogProps> = ({ isOpen, onClose, vendorId }) => {
   if (!isOpen) return null;
   const [description, setDescription] = useState("");
   const cancelButtonRef = useRef(null);
+  const [amount, setAmount] = useState<any>();
 
+  const handleAmount = (e: any) => {
+    setAmount(e.target.value);
+  };
+  const loadBalance = () => {
+    axios
+      .patch(`${BASEURL}/vendor/withdraw/${vendorId}`, { balance: amount })
+      .then((response) => {
+        console.log(response);
+        toast.success(response?.data?.msg);
+        onClose();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err?.response?.data?.message);
+      });
+  };
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
@@ -74,6 +94,7 @@ const LoadMoney: React.FC<DialogProps> = ({ isOpen, onClose }) => {
                       <div className="mt-2">
                         <input
                           type="text"
+                          onChange={handleAmount}
                           className="w-full border rounded-md  px-3 py-2"
                           placeholder="Enter the amount"
                         />
@@ -92,6 +113,7 @@ const LoadMoney: React.FC<DialogProps> = ({ isOpen, onClose }) => {
                     <div className="mt-10 w-full -ml-5 ">
                       <button
                         type="button"
+                        onClick={loadBalance}
                         className="inline-flex  w-full justify-center rounded-md bg-green-600 px-[124px] py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 sm:ml-3 sm:w-auto"
                       >
                         ADD

@@ -24,7 +24,7 @@ function Landing({ icons }: any) {
           />
         </Link>
       ),
-      name: "Plumber",
+      name: "Plumbing",
     },
     {
       icon: (
@@ -80,7 +80,7 @@ function Landing({ icons }: any) {
           />
         </Link>
       ),
-      name: "Carpentar",
+      name: "Carpenter",
     },
     {
       icon: (

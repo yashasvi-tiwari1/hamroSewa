@@ -3,12 +3,12 @@ import {
   IconLogout,
   IconUserCheck,
 } from "@tabler/icons-react";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import CustomDialog from "@sewa/pages/dialog-page";
 import LoadMoney from "@sewa/pages/vendor/wallet";
 import Link from "next/link";
+import axios from "axios";
+import { BASEURL } from "@sewa/pages/api/apiContent";
 
 function Dropdown() {
   const handleLogout = () => {};
@@ -32,14 +32,10 @@ function Dropdown() {
 
 export default function Navbar() {
   const router = useRouter();
-  const [vendor, setVendor] = useState("");
+  const [vendorDetail, setVendorDetail] = useState("");
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const vend = localStorage.getItem("vendorInfo");
-    if (vend) setVendor(vend);
-  }, []);
+  const [vendor, setVendor] = useState<any>({});
 
   const openDialog = () => {
     setDialogOpen(true);
@@ -47,6 +43,21 @@ export default function Navbar() {
   const closeDialog = () => {
     setDialogOpen(false);
   };
+
+  useEffect(() => {
+    const vendorId = localStorage.getItem("vendorInfo");
+    if (vendorId) {
+      const vendorInfo = JSON.parse(vendorId);
+      axios
+        .get(`${BASEURL}/vendor/one/${vendorInfo.vendor_id}`)
+        .then((response) => {
+          setVendor(response.data);
+        })
+        .catch((err) => {
+          console.log(err?.response?.data?.message);
+        });
+    }
+  }, [BASEURL]);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -86,7 +97,7 @@ export default function Navbar() {
               <IconUserCheck />
             </div>
             <div className="">
-              <p>name</p>
+              <p>{vendor.name}</p>
             </div>
             <div
               className="relative"
@@ -98,14 +109,20 @@ export default function Navbar() {
               {isDropdownOpen && <Dropdown />}
             </div>
             <div>
-              <span className="font-semibold">Balance: Rs 50000 </span>
+              {vendor && (
+                <span className="font-semibold">Rs{vendor.balance}</span>
+              )}
               <button
                 className="bg-teal-500 hover:bg-teal-700 text-white py-1 px-2 rounded ml-4 text-base"
                 onClick={openDialog}
               >
                 Withdraw
               </button>
-              <LoadMoney isOpen={isDialogOpen} onClose={closeDialog} />
+              <LoadMoney
+                isOpen={isDialogOpen}
+                onClose={closeDialog}
+                vendorId={vendor.id}
+              />
             </div>
           </div>
         </div>

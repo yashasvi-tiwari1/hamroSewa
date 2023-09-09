@@ -58,6 +58,7 @@ function VendorMaps() {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     libraries: libraries as any,
   });
+  console.log(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string);
 
   if (!isLoaded) {
     return <p>Loading...</p>;

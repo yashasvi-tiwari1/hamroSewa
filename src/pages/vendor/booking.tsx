@@ -110,7 +110,7 @@ const Booking: NextPageWithLayout = () => {
       <div className="bg-dashboard  p-4 rounded-lg">
         <div className="flex justify-between  items-center px-4  ">
           <div className="flex items-center gap-6">
-            <span>Total Booking: 100 </span>
+            <span>Total Booking: {bookings.length} </span>
           </div>
           <div className="relative user-search">
             <input

@@ -5,9 +5,7 @@ import { IconEdit, IconSearch, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
-import error = toast.error;
 import { BASEURL } from "@sewa/pages/api/apiContent";
-import { fetch } from "next/dist/compiled/@edge-runtime/primitives";
 
 interface payment {
   id: number;
