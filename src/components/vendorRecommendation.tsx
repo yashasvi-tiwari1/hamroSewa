@@ -9,14 +9,18 @@ function VendorRecommendation() {
 
   const [vendors, setVendors] = useState([]);
   useEffect(() => {
-    axios
-      .get(`${BASEURL}/vendor`)
-      .then((response) => {
-        setVendors(response.data.data);
-      })
-      .catch((error) => {
-        toast.error(error.response);
-      });
+    const userId = localStorage.getItem("userInfo");
+    if (userId) {
+      const userInfo = JSON.parse(userId);
+      axios
+        .get(`${BASEURL}/vendor/recommendations/${userInfo.user_Id}`)
+        .then((response) => {
+          setVendors(response.data);
+        })
+        .catch((error) => {
+          toast.error(error.response);
+        });
+    }
   }, [BASEURL]);
   console.log(vendors);
   return (

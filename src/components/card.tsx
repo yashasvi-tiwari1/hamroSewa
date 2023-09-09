@@ -22,27 +22,7 @@ function Card() {
         toast.error(error.response);
       });
   }, [BASEURL]);
-  // const Services = [
-  //     {
-  //         name:"Plumbing",
-  //         image:"plumbing.png",
-  //         description:"Plumbing is the solution for home appliances"
-  //     },
-  //     {
-  //         name:"Plumbing",
-  //         image:"plumbing.png",
-  //         description:"Plumbing is the solution for home appliances"
-  //     }, {
-  //         name:"Plumbing",
-  //         image:"plumbing.png",
-  //         description:"Plumbing is the solution for home appliances"
-  //     },
-  //     {
-  //         name:"Plumbing",
-  //         image:"plumbing.png",
-  //         description:"Plumbing is the solution for home appliances"
-  //     },
-  // ]
+
   console.log(services);
   return (
     <div className=" container md:px-16 md:py-16 p-8 md:p-12 full-width">
