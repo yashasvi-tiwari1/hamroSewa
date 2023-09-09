@@ -116,7 +116,7 @@ const LoadMoney: React.FC<DialogProps> = ({ isOpen, onClose, vendorId }) => {
                         onClick={loadBalance}
                         className="inline-flex  w-full justify-center rounded-md bg-green-600 px-[124px] py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 sm:ml-3 sm:w-auto"
                       >
-                        ADD
+                        LOAD
                       </button>
                     </div>
                     <div className="mt-3 pb-2">
